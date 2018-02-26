@@ -7,3 +7,24 @@ a {
 a:hover {
     color: rgb(17, 66, 5);
 }
+
+#sections {
+    position: relative;
+    display: inline-block;
+    width: 500px;
+    margin-left: 100px;
+}
+
+#vis {
+    display: inline-block;
+    position: fixed;
+    top: 60px;
+    height: 400px;
+    width: 500px;
+    margin-left: 20px;
+    border: 1px solid gray;
+}
+
+.step {
+    margin-bottom: 300px;
+}

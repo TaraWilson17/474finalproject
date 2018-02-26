@@ -20,12 +20,7 @@
     <!-- main.css -->
     <link rel="stylesheet" href="css/index.css" />
     <!-- index.js -->
-    <script src="js/vis1.js"></script>
-    <script src="js/vis2.js"></script>
-    <script src="js/vis3.js"></script>
-    <script src="js/vis4.js"></script>
-    <script src="js/vis5.js"></script>
-    <script src="js/vis6.js"></script>
+    <script src="js/index.js"></script>
 </head>
 
 <body>
@@ -37,7 +32,7 @@
         </div>
     </div>
     <!-- Section 1: Person who isn't experincing climate change -->
-    <section class="bg-light p-3">
+    <div class="bg-light p-3">
         <p class="ml-3">As you walk outside in your heavy coat and see the snow fall in late February, it is hard to believe that our 
             planet is actually warming at all. "Global warming" refers to the <a href="https://www.climate.gov/news-features/climate-qa/does-global-warming-mean-it%E2%80%99s-warming-everywhere">average annual temperature increase</a>, 
             something that may not be felt the same way in every region due to varied climates. While Earth as a whole is warming, certain 
@@ -52,90 +47,81 @@
             a tree have a negative impact on our atmosphere. So, while you may be turning up the thermostat more than usual, there is a real 
             global crisis occuring that needs to be addressed before it has the chance to get any worse.
         </p>
-    </section>
-    <!-- Section 2: Climate change is different everywhere -->
-    <section class="bg-secondary p-3">
-        <h3 class="ml-3">Climate Change is a phenomena experienced differently everywhere</h3>
-        <div class="container row">
-            <div class="col">
-                <p>Rates of warming are not constant accross different locations. Certain areas are experiencing warming at a faster rate than 
-                    others, such as the Arctic region which is <a href="https://www.npr.org/2014/12/18/371438087/arctic-is-warming-twice-as-fast-as-world-average">
-                    warming twice as fast as other regions</a>. This is a result of systems accumulating energy at the poles, causing increased 
-                    warming. Also, as ice melts, it lowers the ability to reflect the sun's energy back into space. This creates a negative 
-                    feedback loop where more warming leads to more melting which in terms leads to more warming.
-                </p>
-            </div>
-            <div class="col" id="global">
-                <p>Graphic about global climate change patterns</p>
-            </div>
+    </div>
+    <div id="graphic">
+        <div id="sections">
+        <!-- Section 2: Climate change is different everywhere -->
+            <section class="bg-secondary p-3 step">
+                <h3 class="ml-3">Climate Change is a phenomena experienced differently everywhere</h3>
+                <div class="container row">
+                    <div class="col">
+                        <p>Rates of warming are not constant accross different locations. Certain areas are experiencing warming at a faster rate than 
+                            others, such as the Arctic region which is <a href="https://www.npr.org/2014/12/18/371438087/arctic-is-warming-twice-as-fast-as-world-average">
+                            warming twice as fast as other regions</a>. This is a result of systems accumulating energy at the poles, causing increased 
+                            warming. Also, as ice melts, it lowers the ability to reflect the sun's energy back into space. This creates a negative 
+                            feedback loop where more warming leads to more melting which in terms leads to more warming.
+                        </p>
+                    </div>
+                </div>
+            </section>
+            <!-- Section 3: CO2 concentrations -->
+            <section class="bg-success p-3 step">
+                <h3 class="ml-3">The greenhouse gas problem</h3>
+                <div class="container row">
+                    <div class="col">
+                        <p>There is no doubt that greenhouse gas concentrations have been increasing in our atmosphere. Recently, greenhouse gas
+                            concentrations <a href="https://public.wmo.int/en/media/press-release/greenhouse-gas-concentrations-surge-new-record">reached 
+                            the highest amount in the last 800,000 years</a>. These greenhouse gas concentrations are altered slightly by climatic shifts 
+                            such as El Nino and La Nina years, but the clear general trend is a dramatic rise in these concentrations. Greenhouse gases 
+                            consist mainly of Carbon Dioxide, Methane and Nitrous Oxide. This huge surge in greenhouse gas concentrations is largely a 
+                            result of human-induced factors such as population increase, agriculture, deforestation, industrialization and fossil fuel 
+                            emssions. While natural process remove some greenhouse gases from the planet, our current rate of emissions far exceeds
+                            any rate of removal. Since the liftime of emissions in the atmosphere is increadibly long, we are on track for a devestating 
+                            amount of warming.
+                        </p>
+                    </div>
+
+                </div>
+            </section>
+            <!-- Section 4: Global heat patterns -->
+            <section class="bg-light p-3 step">
+                <h3 class="ml-3">The planet is actually warming, and fast</h3>
+                <div class="container row">
+                    <div class="col">
+                        <p>There have been significant heat increases experienced in the recent past.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Section 5: Sea level rise -->
+            <section class="bg-secondary p-3 step">
+                <h3 class="ml-3">The seas are rising too, and quickly</h3>
+                <div class="container row">
+                    <div class="col">
+                        <p>A major concern associated with global climate change is the rising of sea level. Sea level rise is mainly a 
+                            result of the melting of glaciers due to increased temperatures.</p>
+                    </div>
+                </div>
+            </section>
+            <!-- Section 6: Current impact and how this is only going to get worse -->
+            <section class="bg-success p-3 step">
+                <h3 class="ml-3">This will stop soon though, right?</h3>
+                <div class="container row">
+                    <div class="col">
+                        <p>Unless we take action soon, this problem will continue to worsen. While it is hard to estimate exactly what we expect to 
+                            happen, <a href="http://www.ghgonline.org/predictions.htm">a range of models</a> have made predcicitons for future conditions. 
+                            Within 100 years, CO2 emissions could reach anywhere between 500-900 ppm, temperatures could increase anywhere between 2 and 6 
+                            degrees Celsius, and sea levels could rise anywhere between 2 and 4 feet. These changes could have catastrophic implications 
+                            including increased occurance of natural disasters, complete flooding of coastal cities, extinction of species, decline of 
+                            crop health and the overall end of life as we know it. It is too late to completly halt all of the negative effects of climate change 
+                            but it is not too late to help mitigate some of these impacts. Reducing our greenhouse gas emissions will have a direct impact 
+                            on how damaging these impacts may be.
+                        </p>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
-    <!-- Section 3: CO2 concentrations -->
-    <section class="bg-success p-3">
-        <h3 class="ml-3">The greenhouse gas problem</h3>
-        <div class="container row">
-            <div class="col" id="CO2">
-                <p>Graphic about gg concentration</p>
-            </div>
-            <div class="col">
-                <p>There is no doubt that greenhouse gas concentrations have been increasing in our atmosphere. Recently, greenhouse gas
-                    concentrations <a href="https://public.wmo.int/en/media/press-release/greenhouse-gas-concentrations-surge-new-record">reached 
-                    the highest amount in the last 800,000 years</a>. These greenhouse gas concentrations are altered slightly by climatic shifts 
-                    such as El Nino and La Nina years, but the clear general trend is a dramatic rise in these concentrations. Greenhouse gases 
-                    consist mainly of Carbon Dioxide, Methane and Nitrous Oxide. This huge surge in greenhouse gas concentrations is largely a 
-                    result of human-induced factors such as population increase, agriculture, deforestation, industrialization and fossil fuel 
-                    emssions. While natural process remove some greenhouse gases from the planet, our current rate of emissions far exceeds
-                    any rate of removal. Since the liftime of emissions in the atmosphere is increadibly long, we are on track for a devestating 
-                    amount of warming.
-                </p>
-            </div>
-        </div>
-    </section>
-    <!-- Section 4: Global heat patterns -->
-    <section class="bg-light p-3">
-        <h3 class="ml-3">The planet is actually warming, and fast</h3>
-        <div class="container">
-            <div class="row">
-                <p>There have been significant heat increases experienced in the recent past.</p>
-            </div>
-            <div class="row" id="heat">
-                <p>Graphic about heat increase here</p>
-            </div>
-        </div>
-    </section>
-    <!-- Section 5: Sea level rise -->
-    <section class="bg-secondary p-3">
-        <h3 class="ml-3">The seas are rising too, and quickly</h3>
-        <div class="container row">
-            <div class="col">
-                <p>A major concern associated with global climate change is the rising of sea level. Sea level rise is mainly a 
-                    result of the melting of glaciers due to increased temperatures.</p>
-            </div>
-            <div class="col" id="sea-level">
-                <p>Graphic about sea level rise here</p>
-            </div>
-        </div>
-    </section>
-    <!-- Section 6: Current impact and how this is only going to get worse -->
-    <section class="bg-success p-3">
-        <h3 class="ml-3">This will stop soon though, right?</h3>
-        <div class="container row">
-            <div class="col" id="future">
-                <p>Graphic about how this will continue going forward</p>
-            </div>
-            <div class="col">
-                <p>Unless we take action soon, this problem will continue to worsen. While it is hard to estimate exactly what we expect to 
-                    happen, <a href="http://www.ghgonline.org/predictions.htm">a range of models</a> have made predcicitons for future conditions. 
-                    Within 100 years, CO2 emissions could reach anywhere between 500-900 ppm, temperatures could increase anywhere between 2 and 6 
-                    degrees Celsius, and sea levels could rise anywhere between 2 and 4 feet. These changes could have catastrophic implications 
-                    including increased occurance of natural disasters, complete flooding of coastal cities, extinction of species, decline of 
-                    crop health and the overall end of life as we know it. It is too late to completly halt all of the negative effects of climate change 
-                    but it is not too late to help mitigate some of these impacts. Reducing our greenhouse gas emissions will have a direct impact 
-                    on how damaging these impacts may be.
-                </p>
-            </div>
-        </div>
-    </section>
+        <div id="vis"></div>
+    </div>
     <!-- Section 7: How you can help -->
     <section class="bg-white p-3">
         <h3 class="ml-3">You can make a difference</h3>
@@ -149,9 +135,6 @@
                     use are all easy alterations to your daily routine that can scale up and make a big difference. Explore how you can reduce 
                     your Carbon footprint now:
                 </p>
-            </div>
-            <div class="row" id="change">
-                <p>Graphic about how you can make a difference here, maybe have checkmarks to select things you can do to reduce footprint</p>
             </div>
         </div>
     </section>
