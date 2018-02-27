@@ -9,7 +9,7 @@ $(function() {
     var yScale = d3.scaleLinear().range([height, 0]);
 
     // setup x 
-    var xValue = function (d) { return d["Year"]; }, // data -> value
+    var xValue = function (d) { return d.Year; }, // data -> value
         xMap = function (d) { return xScale(xValue(d)); }; // data -> display
 
     // setup y
@@ -25,7 +25,7 @@ $(function() {
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
             data.forEach(function (d) {
-                d["Year"] = +d["Year"];
+                d.Year = +d.Year;
                 d["Lowess Smoothing"] = +d["Lowess Smoothing"];
         });
         dataset = data;
