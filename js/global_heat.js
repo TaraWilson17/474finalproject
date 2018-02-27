@@ -80,12 +80,5 @@ $(function() {
                 .attr("cx", xMap)
                 .attr("cy", yMap)
 
-        // draw legend text
-        legend.append("text")
-            .attr("x", width - 16)
-            .attr("y", 9)
-            .attr("dy", ".35em")
-            .style("text-anchor", "end")
-            .text(function (d) { return d; })
     }
 });
