@@ -28,3 +28,8 @@ a:hover {
 .step {
     margin-bottom: 300px;
 }
+
+svg {
+    width: 960;
+    height: 500;
+}
