@@ -11,7 +11,7 @@ a:hover {
 #sections {
     position: relative;
     display: inline-block;
-    width: 500px;
+    width: 400px;
     margin-left: 100px;
 }
 
@@ -19,8 +19,8 @@ a:hover {
     display: inline-block;
     position: fixed;
     top: 60px;
-    height: 400px;
-    width: 500px;
+    height: 500px;
+    width: 700px;
     margin-left: 20px;
     border: 1px solid gray;
 }
