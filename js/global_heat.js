@@ -2,10 +2,11 @@ $(function() {
     var dataset; //the full dataset
 
     var margin = { top: 20, right: 20, bottom: 40, left: 40 },
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    width = 500 - margin.left - margin.right,
+    height = 400 - margin.top - margin.bottom;
 
     var xScale = d3.scaleLinear().range([0, width]);
+    //var xScale = d3.scaleTime().range([0, width]);
     var yScale = d3.scaleLinear().range([height, 0]);
 
     // setup x 
@@ -22,9 +23,12 @@ $(function() {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+    var parseTime = d3.timeParse("%d-%b-%y");
+
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
             data.forEach(function (d) {
+                //d.Year = parseTime(d.Year);
                 d.Year = +d.Year;
                 d["Lowess Smoothing"] = +d["Lowess Smoothing"];
         });
@@ -43,6 +47,9 @@ $(function() {
 
         xScale.domain([1880, 2017]);
         yScale.domain([-0.49, 0.99]);
+
+        //xScale.domain(d3.extent(dataset, function(d) { return d.Year; }));
+        //yScale.domain([d3.min(dataset, yValue) + 1, d3.max(dataset, yValue) - 1]);
         // Add the X Axis
         svg.append("g")
         .attr("transform", "translate(0 ," + height + ")")
