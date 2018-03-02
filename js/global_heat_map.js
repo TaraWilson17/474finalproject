@@ -1,4 +1,4 @@
-$(function() {
+/*$(function() {
     var width = 960,
     height = 500;
 
@@ -50,4 +50,4 @@ function ready(error, u, c) {
 
 }
     
-);
+);*/
