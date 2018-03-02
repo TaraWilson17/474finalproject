@@ -9,7 +9,7 @@ $(function() {
     var path = d3.geoPath()
                 .projection(projection);
 
-    var svg = d3.select("#greenhouse_gas_vis").append("svg")
+    var svg = d3.select("#global_heat_pattern_vis").append("svg")
                 .attr("width", width)
                 .attr("height", height);
 
