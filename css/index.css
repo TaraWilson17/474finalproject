@@ -15,6 +15,10 @@ a:hover {
     margin-left: 100px;
 }
 
+.line {
+    stroke-width: 2px;
+}
+
 #vis {
     display: inline-block;
     position: fixed;

@@ -23,9 +23,9 @@ $(function() {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var line = d3.svg.line()
-                .xScale(function(d) { return xScale(d.Year);})
-                .yScale(function(d) { return yScale(d["Annual Mean"]);});
+    var line = d3.line()
+                .x(function(d) { return xScale(d['Year']);})
+                .y(function(d) { return yScale(d["Annual Mean"]);});
     //var parseTime = d3.timeParse("%d-%b-%y");
 
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
@@ -42,6 +42,7 @@ $(function() {
     });
 
     function drawVis(dataset) {
+        
         svg.selectAll("g")
         .remove();
         // don't want dots overlapping axis, so add in buffer to data domain
@@ -51,7 +52,7 @@ $(function() {
 
         xScale.domain([1880, 2017]);
         yScale.domain([-0.49, 0.99]);
-
+        
         //xScale.domain(d3.extent(dataset, function(d) { return d.Year; }));
         //yScale.domain([d3.min(dataset, yValue) + 1, d3.max(dataset, yValue) - 1]);
         // Add the X Axis
@@ -94,8 +95,11 @@ $(function() {
                 .attr("cy", yMap)
         
         svg.append("path")
-            .datum(dataset)
+            .data([dataset])
             .attr("class", "line")
+            .style('stroke', 'red')
+            .style('stroke-width', '2px')
+            .style('fill', 'none')
             .attr("d", line);
 
     }
