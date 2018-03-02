@@ -37,10 +37,12 @@ $(function() {
         svg.selectAll("g")
         .remove();
         // don't want dots overlapping axis, so add in buffer to data domain
-        xScale.domain([d3.min(dataset, xValue) - 1, d3.max(dataset, xValue) + 1]);
+        //xScale.domain([d3.min(dataset, xValue) - 1, d3.max(dataset, xValue) + 1]);
         //yScale.domain([d3.min(data, yValue) - 1, d3.max(data, yValue) + 1]);
-        yScale.domain([d3.min(dataset, yValue) + 1, d3.max(dataset, yValue) - 1]);
+        //yScale.domain([d3.min(dataset, yValue) + 1, d3.max(dataset, yValue) - 1]);
 
+        xScale.domain([1880, 2017]);
+        yScale.domain([-0.49, 0.99]);
         // Add the X Axis
         svg.append("g")
         .attr("transform", "translate(0 ," + height + ")")
