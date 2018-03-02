@@ -58,7 +58,7 @@ $(function() {
         // Add the X Axis
         svg.append("g")
         .attr("transform", "translate(0 ," + height + ")")
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
         svg.append("text")             
             .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 10) + ")")

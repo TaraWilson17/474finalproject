@@ -65,10 +65,10 @@ $(function () {
             //draws axis
             svg.append("g")
                         .attr("transform", "translate(60," + height + ")")
-                        .call(d3.axisBottom(x));
+                        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
             svg.append("g")
             .attr("transform", "translate(60,0)")
-                .call(d3.axisLeft(y));
+                .call(d3.axisLeft(y).tickFormat(d3.format("d")));
 
 
             svg.append("text")             
