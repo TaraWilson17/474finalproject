@@ -35,7 +35,7 @@ $(function() {
             data.forEach(function (d) {
                 d.Latitude = +d.Latitude;
                 d.Longitude = +d.Longitude;
-                d.year = +d["1976-1977"];
+                d["1976-1977"] = +d["1976-1977"];
             });
             dataset = data;
 
