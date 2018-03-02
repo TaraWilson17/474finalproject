@@ -17,7 +17,7 @@ $(function() {
     var yValue = function (d) { return d["Lowess Smoothing"]; }, // data -> value
         yMap = function (d) { return yScale(yValue(d)); }; // data -> display
 
-    var svg = d3.select("#vis").append("svg")
+    var svg = d3.select("#global_heat_index_vis").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")

@@ -2,12 +2,11 @@ $(function () {
     //create window for viz
     var margin = { top: 20, right: 20, bottom: 40, left: 60 },
         //width = d3.select('#greenhouse_gas_vis').attr('width')
-        width = +800 - margin.left - margin.right,
-        height = +650 - margin.top - margin.bottom
+        width = +700 - margin.left - margin.right,
+        height = +500 - margin.top - margin.bottom
         //height = d3.select('#greenhouse_gas_vis').attr('height')
 
         console.log(d3.select('#greenhouse_gas_vis').attr('width'))
-    d3.select('#greenhouse_gas_vis').attr('margin-top', '0').attr('margin-bottom', '0')
      var svg = d3.select("#greenhouse_gas_vis")
         .append("svg")
         //.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
