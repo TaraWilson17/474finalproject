@@ -23,14 +23,18 @@ $(function() {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var parseTime = d3.timeParse("%d-%b-%y");
+    var line = d3.svg.line()
+                .xScale(function(d) { return xScale(d.Year);})
+                .yScale(function(d) { return yScale(d["Annual Mean"]);});
+    //var parseTime = d3.timeParse("%d-%b-%y");
 
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
             data.forEach(function (d) {
                 //d.Year = parseTime(d.Year);
                 d.Year = +d.Year;
-                d["Lowess Smoothing"] = +d["Lowess Smoothing"];
+                d["Lowess Smoothing"] = +d["Lowess Smoothing"]
+                d["Annual Mean"] = +d["Annual Mean"];
         });
         dataset = data;
 
@@ -88,6 +92,11 @@ $(function() {
             dots
                 .attr("cx", xMap)
                 .attr("cy", yMap)
+        
+        svg.append("path")
+            .datum(dataset)
+            .attr("class", "line")
+            .attr("d", line);
 
     }
 });
