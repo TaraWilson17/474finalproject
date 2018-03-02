@@ -40,6 +40,13 @@ function ready(error, u, c) {
         drawVis(dataset);
     });
     
+    svg.selectAll(".pin")
+        .data(dataset)
+        .enter()
+        .append("circle")
+        .attr("r", 5)
+        .attr("transform", function(d) {return "translate(" + projection([d.Longitude,d.Latitude]) + ")";});
+    }
 
 }
     
