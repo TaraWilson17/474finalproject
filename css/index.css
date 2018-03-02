@@ -1,3 +1,7 @@
+#sections {
+    max-width: 100%;
+}
+
 a {
     font-weight: bold;
     text-decoration: underline;
@@ -8,25 +12,59 @@ a:hover {
     color: rgb(17, 66, 5);
 }
 
-#sections {
+
+.section {
     position: relative;
     display: inline-block;
-    width: 400px;
-    margin-left: 100px;
+    width: 100%;
+    padding: 0px;
+    margin: 0;
 }
 
-#vis {
-    display: inline-block;
-    position: fixed;
-    top: 60px;
-    height: 500px;
-    width: 700px;
-    margin-left: 20px;
-    border: 1px solid gray;
+.row {
+    max-width: 100%;
 }
+
+p {
+    padding-left: 50px;
+    padding-top: 30px;
+    font-size: 20px;
+}
+
+.vis {
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#global_heat_pattern_vis {
+    border: 2px solid red;
+}
+
+#greenhouse_gas_vis {
+    border: 2px solid orange;
+}
+
+#global_heat_index_vis {
+    border: 2px solid green;
+}
+
+#sea_level_rise_vis {
+    border: 2px solid blue;
+    width: 100%;
+    margin-top: 50px;
+}
+
+#projection_vis {
+    border: 2px solid purple;
+}
+
+
 
 .step {
-    margin-bottom: 300px;
+    width: 500px;
+    margin-top: 50px;
+    margin-bottom: 50px;
 }
 
 .liquidFillGaugeText { 
