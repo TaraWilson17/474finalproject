@@ -17,7 +17,7 @@ $(function() {
     var yValue = function (d) { return d["Lowess Smoothing"]; }, // data -> value
         yMap = function (d) { return yScale(yValue(d)); }; // data -> display
 
-    var svg = d3.select("#vis").append("svg")
+    var svg = d3.select("#global_heat_index_vis").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
@@ -58,12 +58,13 @@ $(function() {
         // Add the X Axis
         svg.append("g")
         .attr("transform", "translate(0 ," + height + ")")
-        .call(d3.axisBottom(xScale));
+        .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
         svg.append("text")             
             .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 10) + ")")
             .style("text-anchor", "middle")
             .style("font-size", "10px")
+            .attr("font-weight", "bold")
             .text("Year");
 
         // Add the Y Axis
@@ -77,6 +78,7 @@ $(function() {
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text("Lowess Smoothing")
+            .attr("font-weight", "bold")
             .style("font-size", "10px");
 
         var dots = svg.selectAll(".dot")
