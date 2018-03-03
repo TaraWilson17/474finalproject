@@ -22,7 +22,7 @@ $(function() {
         // {/* <svg id="fillgauge1" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg>
 
         let sl_configure = liquidFillGaugeSettings();
-        let sl_fill = loadLiquidFillGauge(sl_svg, 55, sl_configure); //55is MAX VALUE RIGHT NOW
+        let sl_fill = loadLiquidFillGauge(sl_svg, 55, sl_configure); //55 is MAX VALUE RIGHT NOW
     }
 
     function liquidFillGaugeSettings() {
