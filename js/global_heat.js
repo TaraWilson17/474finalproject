@@ -64,6 +64,7 @@ $(function() {
             .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 10) + ")")
             .style("text-anchor", "middle")
             .style("font-size", "10px")
+            .attr("font-weight", "bold")
             .text("Year");
 
         // Add the Y Axis
@@ -77,6 +78,7 @@ $(function() {
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .text("Lowess Smoothing")
+            .attr("font-weight", "bold")
             .style("font-size", "10px");
 
         var dots = svg.selectAll(".dot")
