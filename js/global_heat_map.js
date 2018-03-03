@@ -34,11 +34,11 @@ $(function() {
 
     function drawVis(data) {
         svg.selectAll("circle")
-            .data([data]).enter()
+            .data(data).enter()
             .append("circle")
-            .attr("cx", function (d) { console.log(0); return projection(d)[0].Latitude; })
-            .attr("cy", function (d) { return projection(d).Longitude; })
-            .attr("r", "10px")
+            .attr("cx", function (d) { return projection([d.Longitude, d.Latitude])[0];})
+            .attr("cy", function (d) { return projection([d.Longitude, d.Latitude])[1];; })
+            .attr("r", "2px")
             .attr("fill", "red")
     }
 });
