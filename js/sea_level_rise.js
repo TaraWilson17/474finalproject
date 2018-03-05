@@ -223,7 +223,7 @@ $(function() {
             wave.attr('transform','translate('+waveAnimateScale(wave.attr('T'))+',0)');
             wave.transition()
                 .duration(config.waveAnimateTime * (1-wave.attr('T')))
-                .ease('linear')
+                .ease(d3.easeLinear)
                 .attr('transform','translate('+waveAnimateScale(1)+',0)')
                 .attr('T', 1)
                 .on('end', function(){
@@ -234,5 +234,5 @@ $(function() {
     }
 
 
-        //return new GaugeUpdater();
+    //return new GaugeUpdater();
 })
