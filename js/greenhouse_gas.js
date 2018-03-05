@@ -1,9 +1,9 @@
 $(function () {
     //create window for viz
-    var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+    var margin = { top: 220, right: 20, bottom: 40, left: 60 },
         //width = d3.select('#greenhouse_gas_vis').attr('width')
         width = +700 - margin.left - margin.right,
-        height = +500 - margin.top - margin.bottom
+        height = +900 - margin.top - margin.bottom
         //height = d3.select('#greenhouse_gas_vis').attr('height')
 
         console.log(d3.select('#greenhouse_gas_vis').attr('width'))
@@ -70,21 +70,22 @@ $(function () {
             .attr("transform", "translate(60,0)")
                 .call(d3.axisLeft(y).tickFormat(d3.format("d")));
 
-
-            svg.append("text")             
-                .attr("transform",
-                    "translate(" + (width/2) + " ," + 
-                    (height + margin.top + 15) + ")")
-                .style("text-anchor", "middle")
-                .text("Year");
+            // Adds title to the visual
+            svg.append("text")
+                .attr("x", (width / 2))             
+                .attr("y", 17)
+                .attr("font-weight", "bold")
+                .attr("text-anchor", "middle")  
+                .style("font-size", "20px") 
+                .text("Global carbon dioxide concentrations measured in Mauna Loa");
 
             svg.append("text")
-             
                 .attr("transform", "rotate(-90)")
                 .attr("y", 0)
                 .attr("x", 0 - (height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .attr("font-weight", "bold")
                 .text("CO2 PPM (parts per million)");
         }
     });

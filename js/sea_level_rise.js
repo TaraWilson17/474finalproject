@@ -1,60 +1,60 @@
-// $(function() {
-//     loadSeaLevelData();
+$(function() {
+    loadSeaLevelData();
 
-//     function loadSeaLevelData() {
-//         d3.csv("data/sea_level_data.csv", function (error, data) {
-//             if (error) return console.warn(error);
-//             data.forEach(function (d) {
-//                 d.Year = +d.Year;
-//                 d.SeaLevel = +d.Adjusted_sea_level_inches;
-//                 d.LowerBound = +d.Lower_error_bound;
-//                 d.UpperBound = +d.Upper_error_bound;
-//             });
-//         let dataset = data
-//         drawSeaLevel(dataset);
-//         });
-//     }
+    function loadSeaLevelData() {
+        d3.csv("data/sea_level_data.csv", function (error, data) {
+            if (error) return console.warn(error);
+            data.forEach(function (d) {
+                d.Year = +d.Year;
+                d.SeaLevel = +d.Adjusted_sea_level_inches;
+                d.LowerBound = +d.Lower_error_bound;
+                d.UpperBound = +d.Upper_error_bound;
+            });
+        let dataset = data
+        drawSeaLevel(dataset);
+        });
+    }
 
-//     function drawSeaLevel(data) { 
-//         let sl_svg = d3.select("#sea_level_rise_vis").append("svg")
-//             .attr("width", "97%")
-//             .attr("height", 500);
-//         // {/* <svg id="fillgauge1" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg>
+    function drawSeaLevel(data) { 
+        let sl_svg = d3.select("#sea_level_rise_vis").append("svg")
+            .attr("width", "97%")
+            .attr("height", 500);
+        // {/* <svg id="fillgauge1" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg>
 
-//         let sl_configure = liquidFillGaugeSettings();
-//         let sl_fill = loadLiquidFillGauge(sl_svg, 55, sl_configure); //55 is MAX VALUE RIGHT NOW
-//     }
+        let sl_configure = liquidFillGaugeSettings();
+        let sl_fill = loadLiquidFillGauge(sl_svg, 55, sl_configure); //55 is MAX VALUE RIGHT NOW
+    }
 
-//     function liquidFillGaugeSettings() {
-//         return {
-//             circleColor:"#178BCA",
-//             textColor:"#045681",
-//             waveTextColor:"#A4DBf8",
-//             waveColor:"#178BCA",
-//             circleThickness:0.05,
-//             textVertPosition:0.5,
-//             waveAnimateTime:2000,
-//             minValue:0,
-//             maxValue:100,
-//             circleFillGap:0.05,
-//             waveHeight:0.3,
-//             waveCount:1,
-//             waveRiseTime:7000,
-//             waveRise:true,
-//             waveHeightScaling:true,
-//             waveAnimate:true,
-//             waveOffset:0,
-//             textSize:1,
-//             valueCountUp:true,
-//             displayUnit:true
-//         };
-//     }
+    function liquidFillGaugeSettings() {
+        return {
+            circleColor:"#178BCA",
+            textColor:"#045681",
+            waveTextColor:"#A4DBf8",
+            waveColor:"#178BCA",
+            circleThickness:0.05,
+            textVertPosition:0.5,
+            waveAnimateTime:2000,
+            minValue:0,
+            maxValue:100,
+            circleFillGap:0.05,
+            waveHeight:0.3,
+            waveCount:1,
+            waveRiseTime:7000,
+            waveRise:true,
+            waveHeightScaling:true,
+            waveAnimate:true,
+            waveOffset:0,
+            textSize:1,
+            valueCountUp:true,
+            displayUnit:true
+        };
+    }
 
-//     function loadLiquidFillGauge(gauge, value, config) {
-//         var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height")))/2;
-//         var locationX = parseInt(gauge.style("width"))/2 - radius;
-//         var locationY = parseInt(gauge.style("height"))/2 - radius;
-//         var fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value))/config.maxValue;
+    function loadLiquidFillGauge(gauge, value, config) {
+        var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height")))/2;
+        var locationX = parseInt(gauge.style("width"))/2 - radius;
+        var locationY = parseInt(gauge.style("height"))/2 - radius;
+        var fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value))/config.maxValue;
 
         let waveHeightScale = null;
         if(config.waveHeightScaling){
@@ -231,8 +231,4 @@
                     animateWave(config.waveAnimateTime);
                 });
         }
-    }
-
-
-    //return new GaugeUpdater();
-})
+    }})
