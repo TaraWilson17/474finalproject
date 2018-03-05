@@ -13,7 +13,7 @@ $(function() {
     var path = d3.geoPath()
       .projection(projection);
     
-    var url = "http://enjalot.github.io/wwsd/data/world/world-110m.geojson";
+    var url = "https://enjalot.github.io/wwsd/data/world/world-110m.geojson";
     d3.json(url, function(err, geojson) {
       svg.append("path")
         .attr("d", path(geojson))
