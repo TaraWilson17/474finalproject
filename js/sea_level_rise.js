@@ -19,10 +19,8 @@ $(function() {
         let sl_svg = d3.select("#sea_level_rise_vis").append("svg")
             .attr("width", "97%")
             .attr("height", 500);
-        // {/* <svg id="fillgauge1" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg>
-
         let sl_configure = liquidFillGaugeSettings();
-        let sl_fill = loadLiquidFillGauge(sl_svg, 55, sl_configure); //55 is MAX VALUE RIGHT NOW
+        let sl_fill = loadLiquidFillGauge(sl_svg, 8.98, sl_configure);
     }
 
     function liquidFillGaugeSettings() {
@@ -39,7 +37,7 @@ $(function() {
             circleFillGap:0.05,
             waveHeight:0.3,
             waveCount:1,
-            waveRiseTime:7000,
+            waveRiseTime:10000,
             waveRise:true,
             waveHeightScaling:true,
             waveAnimate:true,
@@ -70,8 +68,8 @@ $(function() {
         const textPixels = (config.textSize*radius/2);
         const textFinalValue = parseFloat(value).toFixed(2);
         const textStartValue = config.valueCountUp?config.minValue:textFinalValue;
-        const percentText = config.displayPercent?"%":"";
-        const unitText = config.displayUnit?"in":"";
+        //const percentText = config.displayPercent?"%":"";
+        const unitText = config.displayUnit?"in":"in";
         const circleThickness = config.circleThickness * radius;
         const circleFillGap = config.circleFillGap * radius;
         const fillCircleMargin = circleThickness + circleFillGap;
@@ -189,7 +187,7 @@ $(function() {
                     text1InterpolatorValue = textRounder(i(t));
                     // Set the gauge's text with the new value and append the % sign
                     // to the end
-                    text1.text(text1InterpolatorValue + percentText);
+                    text1.text(text1InterpolatorValue + unitText);
                 }
                 });
             text2.transition()
@@ -200,7 +198,7 @@ $(function() {
                     text2InterpolatorValue = textRounder(i(t));
                     // Set the gauge's text with the new value and append the % sign
                     // to the end                
-                    text2.text(text2InterpolatorValue + percentText);
+                    text2.text(text2InterpolatorValue + unitText);
                 }
                 });
         }
