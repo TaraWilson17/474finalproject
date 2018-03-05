@@ -77,23 +77,6 @@ $(function() {
         .domain([-1, -0.5, 0, 0.5, 1, 1.5, 2])
         .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
 
-    // function drawVis(data) {
-    //     let startYear = 1976;
-    //     let endYear = 1977;
-    //     for(let i = 0; i < 22; i++) {
-    //         svg.selectAll("circle")
-    //             .data(data).enter()
-    //             .append("circle")
-    //             .attr("cx", function(d) { return projection([d.Longitude, d.Latitude])[0];})
-    //             .attr("cy", function(d) { return projection([d.Longitude, d.Latitude])[1];; })
-    //             .attr("r", "3px")
-    //             .style("fill", function(d) { 
-    //                 let years = (startYear + i) + '-' + (endYear + i);
-    //                 return color(d[years]); 
-    //             });
-    //     }
-    // }
-
     function drawVis(data, startYear, endYear) {
         let circles = svg.selectAll("circle")
             .data(data)

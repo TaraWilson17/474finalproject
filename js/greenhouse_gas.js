@@ -40,9 +40,10 @@ $(function () {
                 .attr("class", "tooltip")
                 .style("opacity", 0);
             
-            x.domain([d3.min(data, function (d, i) { return data[i].decimal_date }), d3.max(data, function (d, i) { return data[i].decimal_date })])
-
-            y.domain([d3.min(data, function (d, i) { return data[i].average }), d3.max(data, function (d, i) { return data[i].average })])
+            //x.domain([d3.min(data, function (d, i) { return data[i].decimal_date }), d3.max(data, function (d, i) { return data[i].decimal_date })])
+            x.domain([1958, 2016]);
+            //y.domain([d3.min(data, function (d, i) { return data[i].average }), d3.max(data, function (d, i) { return data[i].average })])
+            y.domain([300, 450]);
 
             svg.append('path')
                 .data([data])
