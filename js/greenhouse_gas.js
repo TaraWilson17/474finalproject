@@ -29,7 +29,7 @@ $(function () {
         .y(function(d) {return y(400)})
 
 
-    d3.csv('../data/co2data_monthly_clean.csv', function (data) {
+    d3.csv('data/co2data_monthly_clean.csv', function (data) {
         
         //calls the method to draw the viz
         drawVis(data)
