@@ -70,6 +70,7 @@ $(function() {
         const textPixels = (config.textSize*radius/2);
         const textFinalValue = parseFloat(value).toFixed(2);
         const textStartValue = config.valueCountUp?config.minValue:textFinalValue;
+        const percentText = config.displayPercent?"%":"";
         const unitText = config.displayUnit?"in":"";
         const circleThickness = config.circleThickness * radius;
         const circleFillGap = config.circleFillGap * radius;
@@ -136,7 +137,7 @@ $(function() {
             .attr('transform','translate('+radius+','+radius+')');
     
         // Text where the wave does not overlap.
-        const text1 = gaugeGroup.append("text")
+        var text1 = gaugeGroup.append("text")
             .text(textRounder(textStartValue) + unitText)
             .attr("class", "liquidFillGaugeText")
             .attr("text-anchor", "middle")
@@ -177,35 +178,35 @@ $(function() {
             .style("fill", config.waveTextColor)
             .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
         let text2InterpolatorValue = textStartValue;
-    
+
         // Make the value count up.
         if(config.valueCountUp){
             text1.transition()
                 .duration(config.waveRiseTime)
                 .tween("text", function() {
-                  const i = d3.interpolateNumber(text1InterpolatorValue, textFinalValue);
-                  return (t) => {
+                const i = d3.interpolateNumber(text1InterpolatorValue, textFinalValue);
+                return (t) => {
                     text1InterpolatorValue = textRounder(i(t));
                     // Set the gauge's text with the new value and append the % sign
                     // to the end
-                    text1.text(text1InterpolatorValue + unitText);
-                  }
+                    text1.text(text1InterpolatorValue + percentText);
+                }
                 });
             text2.transition()
                 .duration(config.waveRiseTime)
                 .tween("text", function() { 
-                  const i = d3.interpolateNumber(text2InterpolatorValue, textFinalValue);
-                  return (t) => {
+                const i = d3.interpolateNumber(text2InterpolatorValue, textFinalValue);
+                return (t) => {
                     text2InterpolatorValue = textRounder(i(t));
                     // Set the gauge's text with the new value and append the % sign
                     // to the end                
-                    text2.text(text2InterpolatorValue + unitText);
-                  }
+                    text2.text(text2InterpolatorValue + percentText);
+                }
                 });
         }
     
         // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
-        const waveGroupXPosition = fillCircleMargin+fillCircleRadius*2-waveClipWidth;
+        var waveGroupXPosition = fillCircleMargin+fillCircleRadius*2-waveClipWidth;
         if(config.waveRise){
             waveGroup.attr('transform','translate('+waveGroupXPosition+','+waveRiseScale(0)+')')
                 .transition()
@@ -222,7 +223,7 @@ $(function() {
             wave.attr('transform','translate('+waveAnimateScale(wave.attr('T'))+',0)');
             wave.transition()
                 .duration(config.waveAnimateTime * (1-wave.attr('T')))
-                .ease(d3.easeLinear)
+                .ease('linear')
                 .attr('transform','translate('+waveAnimateScale(1)+',0)')
                 .attr('T', 1)
                 .on('end', function(){
