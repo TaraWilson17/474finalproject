@@ -78,18 +78,17 @@ $(function() {
     })
 
 // set the dimensions and margins of the graph
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 700 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+let margin = {top: 170, right: 20, bottom: 30, left: 50},
+    width = 650 - margin.left - margin.right,
+    height = 650 - margin.top - margin.bottom;
 
 
 // set the ranges
-var x = d3.scaleLinear().range([0, width])
+let x = d3.scaleLinear().range([0, width])
     .domain([1900, 2100]);
 
-var y = d3.scaleLinear().range([height, 0])
+let y = d3.scaleLinear().range([height, 0])
     .domain([-1, 4]);
-
 
 //   // Scale the range of the data ///////////////////////////////FIX THIS!!!!!!!!
 //   x.domain(d3.extent(data, function(d) { return d.date; }));
@@ -99,7 +98,7 @@ var y = d3.scaleLinear().range([height, 0])
     // append the svg obgect to the body of the page
     // appends a 'group' element to 'svg'
     // moves the 'group' element to the top left margin
-    var svg = d3.select("#projection_vis").append("svg")
+    let svg = d3.select("#projection_vis").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
     .append("g")
@@ -147,7 +146,7 @@ var y = d3.scaleLinear().range([height, 0])
 
     function drawLegend() {
         //creates the legend elements
-        var legend = svg.selectAll(".legend")
+        let legend = svg.selectAll(".legend")
             .data(models)
             .enter().append("g")
             .attr("class", "legend")
@@ -155,7 +154,7 @@ var y = d3.scaleLinear().range([height, 0])
 
         // draw legend text
         legend.append("text")
-            .attr("x", width - 580)
+            .attr("x", width - 530)
             .attr("y", 9)
             .attr("font-weight", "bold")
             .attr("dy", ".35em")
@@ -164,7 +163,7 @@ var y = d3.scaleLinear().range([height, 0])
         
         // draw legend colored rectangles
         legend.append("rect")
-            .attr("x", width - 610)
+            .attr("x", width - 560)
             .attr("width", 18)
             .attr("height", 18)
             .style("fill", function(d, i) {return colors[i]});
@@ -173,7 +172,6 @@ var y = d3.scaleLinear().range([height, 0])
 
     function drawLine(data, line, color) {
         // Add the valueline path.
-        console.log(line);
         svg.append("path")
             .data([data])
             .style("fill", "none")
