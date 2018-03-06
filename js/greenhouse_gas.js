@@ -80,21 +80,29 @@ $(function () {
             .attr("transform", "translate(60,0)")
                 .call(d3.axisLeft(y).tickFormat(d3.format("d")));
 
-
             svg.append("text")             
-                .attr("transform",
-                    "translate(" + (width/2) + " ," + 
-                    (height + margin.top + 15) + ")")
+                .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
                 .style("text-anchor", "middle")
+                .attr("font-weight", "bold")
                 .text("Year");
 
             svg.append("text")
                 .attr("transform", "rotate(-90)")
-                .attr("y", 0)
-                .attr("x", 0 - (height / 2))
+                .attr("y", 0 - margin.left)
+                .attr("x",0 - (height / 2))
                 .attr("dy", "1em")
                 .style("text-anchor", "middle")
+                .attr("font-weight", "bold")
                 .text("CO2 PPM (parts per million)");
+            
+            // Adds title to the visual
+            svg.append("text")
+                .attr("x", (width / 2))             
+                .attr("y", 17)
+                .attr("font-weight", "bold")
+                .attr("text-anchor", "middle")  
+                .style("font-size", "24px") 
+                .text("Greenhouse Gas Increases Over Time");
         }
     });
 });

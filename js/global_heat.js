@@ -1,9 +1,9 @@
 $(function() {
     var dataset; //the full dataset
 
-    var margin = { top: 20, right: 20, bottom: 40, left: 40 },
-    width = 500 - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+        width = +700 - margin.left - margin.right,
+        height = +500 - margin.top - margin.bottom
 
     var xScale = d3.scaleLinear().range([0, width]);
     //var xScale = d3.scaleTime().range([0, width]);
@@ -61,25 +61,32 @@ $(function() {
         .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
         svg.append("text")             
-            .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 10) + ")")
+            .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
             .style("text-anchor", "middle")
-            .style("font-size", "10px")
             .attr("font-weight", "bold")
             .text("Year");
 
         // Add the Y Axis
         svg.append("g")
-        .call(d3.axisLeft(yScale));
+            .call(d3.axisLeft(yScale));
         
         svg.append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
-            .attr("x", 0 - (height / 2))
+            .attr("x",0 - (height / 2))
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .text("Lowess Smoothing")
             .attr("font-weight", "bold")
-            .style("font-size", "10px");
+            .text("Lowess Smoothing");
+
+        // Adds title to the visual
+        svg.append("text")
+            .attr("x", (width / 2))             
+            .attr("y", 17)
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "middle")  
+            .style("font-size", "24px") 
+            .text("Planet Heat Increases Over Time");
 
         var dots = svg.selectAll(".dot")
                       .data(dataset)
