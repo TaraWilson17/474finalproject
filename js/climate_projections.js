@@ -142,6 +142,13 @@ let y = d3.scaleLinear().range([height, 0])
 
     let colors = ["green", "blue", "red", "purple"];
     let models = ["A1B", "A2", "B1", "commit"];
+
+    var tooltip = d3.select("body")
+                    .append("div")
+                    .style("position", "absolute")
+                    .style("z-index", "10")
+                    .style("visibility", "hidden");
+
     drawLegend();
 
     function drawLegend() {
