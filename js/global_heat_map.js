@@ -50,27 +50,9 @@ $(function() {
         dataset = data;
 
         //drawVis(dataset, "1976", "1977");
-        setTimeout(drawVis, 0, dataset, "1976", "1977");
-        setTimeout(drawVis, 1000, dataset, "1978", "1979");
-        setTimeout(drawVis, 2000, dataset, "1980", "1981");
-        setTimeout(drawVis, 3000, dataset, "1982", "1983");
-        setTimeout(drawVis, 4000, dataset, "1984", "1985");
-        setTimeout(drawVis, 5000, dataset, "1986", "1987");
-        setTimeout(drawVis, 6000, dataset, "1988", "1989");
-        setTimeout(drawVis, 7000, dataset, "1990", "1991");
-        setTimeout(drawVis, 8000, dataset, "1992", "1993");
-        setTimeout(drawVis, 9000, dataset, "1994", "1995");
-        setTimeout(drawVis, 10000, dataset, "1996", "1997");
-        setTimeout(drawVis, 11000, dataset, "1998", "1999");
-        setTimeout(drawVis, 12000, dataset, "2000", "2001");
-        setTimeout(drawVis, 13000, dataset, "2002", "2003");
-        setTimeout(drawVis, 14000, dataset, "2004", "2005");
-        setTimeout(drawVis, 15000, dataset, "2006", "2007");
-        setTimeout(drawVis, 16000, dataset, "2008", "2009");
-        setTimeout(drawVis, 17000, dataset, "2010", "2011");
-        setTimeout(drawVis, 18000, dataset, "2012", "2013");
-        setTimeout(drawVis, 19000, dataset, "2014", "2015");
-        setTimeout(drawVis, 20000, dataset, "2016", "2017");
+        for(var i = 0; i < 21; i++) {
+            setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
+        }
     });
 
     var color = d3.scaleLinear()
