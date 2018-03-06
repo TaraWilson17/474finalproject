@@ -37,28 +37,6 @@ p {
     margin-bottom: 50px;
 }
 
-#global_heat_pattern_vis {
-    border: 2px solid red;
-}
-
-#greenhouse_gas_vis {
-    border: 2px solid orange;
-}
-
-#global_heat_index_vis {
-    border: 2px solid green;
-}
-
-#sea_level_rise_vis {
-    border: 2px solid blue;
-    width: 100%;
-    margin-top: 50px;
-}
-
-#projection_vis {
-    border: 2px solid purple;
-}
-
 .line {
     stroke-width: 2px;
 }
