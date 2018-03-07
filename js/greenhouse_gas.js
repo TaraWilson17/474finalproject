@@ -6,13 +6,11 @@ $(function () {
         height = +900 - margin.top - margin.bottom
         //height = d3.select('#greenhouse_gas_vis').attr('height')
 
-        console.log(d3.select('#greenhouse_gas_vis').attr('width'))
      var svg = d3.select("#greenhouse_gas_vis")
         .append("svg")
         //.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr('height', '100%')
-        .attr('width', '100%')
-        ;
+        .attr('width', '100%');
     
     var x = d3.scaleLinear()                
         .range([0, width]);
@@ -28,6 +26,11 @@ $(function () {
         .x(function(d) {; return x(d.decimal_date)})
         .y(function(d) {return y(400)})
 
+    var tooltip = d3.select("body")
+        .append("div")
+        .style("position", "absolute")
+        .style("z-index", "10")
+        .style("visibility", "hidden");
 
     d3.csv('data/co2data_monthly_clean.csv', function (data) {
         
@@ -52,16 +55,23 @@ $(function () {
                .style('fill', 'none')
                .style('stroke', 'blue')
                .style('stroke-width', '2px')
-                .attr("d", dataline);
+                .attr("d", dataline)
+                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+                .on("mousemove", function(data, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+                                            .html("(" + data[i].decimal_date + ", " + data[i].average + ")");})
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
-            svg.append('path')
+/*             svg.append('path')
                 .data([data])
                .attr("class", "line")
                .attr("transform", "translate(60,0)")
                .style('stroke', 'red')
                .style('stroke-width', '3px')
-                .attr("d", line400);
-
+                .attr("d", line400)
+                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+                .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+                                            .html("(" + data[i].decimal_date + ", " + 400 + ")");})
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");}); */
 
             //draws axis
             svg.append("g")
@@ -71,14 +81,11 @@ $(function () {
             .attr("transform", "translate(60,0)")
                 .call(d3.axisLeft(y).tickFormat(d3.format("d")));
 
-            // Adds title to the visual
-            svg.append("text")
-                .attr("x", (width / 2))             
-                .attr("y", 17)
+            svg.append("text")             
+                .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
+                .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
-                .attr("text-anchor", "middle")  
-                .style("font-size", "20px") 
-                .text("Global carbon dioxide concentrations measured in Mauna Loa");
+                .text("Year");
 
             svg.append("text")
                 .attr("transform", "rotate(-90)")
@@ -88,6 +95,15 @@ $(function () {
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
                 .text("CO2 PPM (parts per million)");
+            
+            // Adds title to the visual
+            svg.append("text")
+                .attr("x", (width / 2))             
+                .attr("y", 17)
+                .attr("font-weight", "bold")
+                .attr("text-anchor", "middle")  
+                .style("font-size", "24px") 
+                .text("Greenhouse Gas Increases Over Time");
         }
     });
 });

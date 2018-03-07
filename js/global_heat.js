@@ -1,12 +1,11 @@
 $(function() {
     var dataset; //the full dataset
 
-    var margin = { top: 20, right: 20, bottom: 40, left: 40 },
-    width = 650 - margin.left - margin.right,
-    height = 600 - margin.top - margin.bottom;
+    var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+        width = +700 - margin.left - margin.right,
+        height = +500 - margin.top - margin.bottom
 
     var xScale = d3.scaleLinear().range([0, width]);
-    //var xScale = d3.scaleTime().range([0, width]);
     var yScale = d3.scaleLinear().range([height, 0]);
 
     // setup x 
@@ -26,7 +25,12 @@ $(function() {
     var line = d3.line()
                 .x(function(d) { return xScale(d['Year']);})
                 .y(function(d) { return yScale(d["Annual Mean"]);});
-    //var parseTime = d3.timeParse("%d-%b-%y");
+    
+    var tooltip = d3.select("body")
+                    .append("div")
+                    .style("position", "absolute")
+                    .style("z-index", "10")
+                    .style("visibility", "hidden");
 
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
@@ -42,29 +46,28 @@ $(function() {
     });
 
     function drawVis(dataset) {
-        
+
         svg.selectAll("g")
         .remove();
-        // don't want dots overlapping axis, so add in buffer to data domain
-        //xScale.domain([d3.min(dataset, xValue) - 1, d3.max(dataset, xValue) + 1]);
-        //yScale.domain([d3.min(data, yValue) - 1, d3.max(data, yValue) + 1]);
-        //yScale.domain([d3.min(dataset, yValue) + 1, d3.max(dataset, yValue) - 1]);
 
         xScale.domain([1880, 2017]);
         yScale.domain([-0.49, 0.99]);
         
-        //xScale.domain(d3.extent(dataset, function(d) { return d.Year; }));
-        //yScale.domain([d3.min(dataset, yValue) + 1, d3.max(dataset, yValue) - 1]);
         // Add the X Axis
         svg.append("g")
         .attr("transform", "translate(0 ," + height + ")")
         .call(d3.axisBottom(xScale).tickFormat(d3.format("d")));
 
+        svg.append("text")             
+            .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Year");
+
         // Add the Y Axis
         svg.append("g")
-        .call(d3.axisLeft(yScale));
-
-        // adds y axis label
+            .call(d3.axisLeft(yScale));
+        
         svg.append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", 0 - margin.left)
@@ -72,7 +75,7 @@ $(function() {
             .attr("dy", "1em")
             .style("text-anchor", "middle")
             .attr("font-weight", "bold")
-            .text("Lowess Smoothing"); 
+            .text("Lowess Smoothing");
 
         // Adds title to the visual
         svg.append("text")
@@ -81,7 +84,7 @@ $(function() {
             .attr("font-weight", "bold")
             .attr("text-anchor", "middle")  
             .style("font-size", "24px") 
-            .text("Gloabl heat index");
+            .text("Planet Heat Increases Over Time");
 
         var dots = svg.selectAll(".dot")
                       .data(dataset)
@@ -104,7 +107,12 @@ $(function() {
             .style('stroke', 'red')
             .style('stroke-width', '2px')
             .style('fill', 'none')
-            .attr("d", line);
+            .attr("d", line)
+            .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+            .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+                                        .html("(" + dataset[i].Year + ", " + dataset[i]["Lowess Smoothing"] + ")" +
+                                            "<br/> Annual Mean " + dataset[i]["Annual Mean"]);})
+            .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
     }
 });

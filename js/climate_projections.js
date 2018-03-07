@@ -78,9 +78,9 @@ $(function() {
     })
 
 // set the dimensions and margins of the graph
-let margin = {top: 170, right: 20, bottom: 30, left: 50},
-    width = 650 - margin.left - margin.right,
-    height = 650 - margin.top - margin.bottom;
+var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+    width = +700 - margin.left - margin.right,
+    height = +500 - margin.top - margin.bottom
 
 
 // set the ranges
@@ -138,10 +138,17 @@ let y = d3.scaleLinear().range([height, 0])
         .attr("font-weight", "bold")
         .attr("text-anchor", "middle")  
         .style("font-size", "24px") 
-        .text("Climate model projections");
+        .text("Climate Model Projections");
 
     let colors = ["green", "blue", "red", "purple"];
     let models = ["A1B", "A2", "B1", "commit"];
+
+    var tooltip = d3.select("body")
+                    .append("div")
+                    .style("position", "absolute")
+                    .style("z-index", "10")
+                    .style("visibility", "hidden");
+
     drawLegend();
 
     function drawLegend() {
@@ -157,7 +164,7 @@ let y = d3.scaleLinear().range([height, 0])
             .attr("x", width - 530)
             .attr("y", 9)
             .attr("font-weight", "bold")
-            .attr("dy", ".35em")
+            .attr("dy", ".ƒ35em")
             //.style("text-anchor", "end")
             .text(function (d, i) {return models[i]; })
         
