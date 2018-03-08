@@ -5,16 +5,27 @@ $(function() {
     width = 500 - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
-    var xScale = d3.scaleLinear().range([0, width]);
-    //var xScale = d3.scaleTime().range([0, width]);
+    var xScale = d3.scaleBand()
+          .range([0, width])
+          .padding(0.1);
     var yScale = d3.scaleLinear().range([height, 0]);
-
+    
     var carFootPrintYearly = 10484;
     var carMilesDriven = 11398;
     var emissionsFromHome = 5455;
     var emissionsFromGarbage = 692;
-    var yearlyEmissions = [carFootPrintYearly, emissionsFromHome, emissionsFromGarbage]
-    var labels = ['Car', 'Home Electricity Usage', 'Emissions from Garbage']
+    var thisPersonsCar = 220;
+    var yourElectricity = 100;
+    var yourGarbage = 100;
+    
+
+    function colors(x) {
+        if(x % 2 == 1) {
+            return 'green'
+        } else {
+            return 'gray'
+        }
+    }
 
     var svg = d3.select("#individual_footprint").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -22,14 +33,89 @@ $(function() {
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    $('#milseInput').on('change', function() {
-        console.log(this.value)
-        $('.slider_label').html(this.value);
-    })
-  
+    var slider = svg.append('g')
+        .attr('class', 'slider')
+    
 
-    function drawBarGraph( ) {
-        svg.append('g').call(slider)
+    $('#MilesDrivenValue').val(220)
+    $('#milesDriven').slider({
+        range:false, min:0, max:220, value:220, slide: function(event, ui) {
+            thisPersonsCar = ui.value
+           
+            $('#MilesDrivenValue').val(ui.value)
+            drawBarGraph()
+        }
+    })
+
+    $('#electricityBillValue').val(100)
+    $('#electricityBill').slider({
+        range:false, min:0, max:100, value:100, slide: function(event, ui) {
+            yourElectricity = ui.value
             
+            $('#electricityBillValue').val(ui.value)
+            drawBarGraph();
+        }
+    })
+    
+    $('#garbageVolumeValue').val(100)
+    $('#garbageVolume').slider({
+        range:false, min:0, max:100, value:100, slide: function(event, ui) {
+            yourGarbage = ui.value
+            console.log(yourElectricity)
+            $('#garbageVolumeValue').val(ui.value)
+            drawBarGraph();
+        }
+    })
+    
+
+    function drawBarGraph() {
+        var data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100]
+       
+    var testLabels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage']
+        xScale.domain(testLabels)
+        yScale.domain([0, 12000])
+
+        svg.selectAll('.bar').remove()
+
+    svg.selectAll(".bar")
+      .data(data)
+        .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d, i) {return xScale(testLabels[i]) })
+      .attr("width", 60)
+      .attr("y", function(d, i) { return yScale(data[i]); })
+      .attr("height", function(d, i) { return height - yScale(data[i]) })
+      .style('fill', function(d, i) {return colors(i)});
+
+  // add the x Axis
+  svg.append("g")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xScale));
+
+  // add the y Axis
+  svg.append("g")
+      .call(d3.axisLeft(yScale));
+
+    svg.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 0 - margin.left)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Pounds of CO2");
+
+        // Adds title to the visual
+        svg.append("text")
+            .attr("x", (width / 2))             
+            .attr("y", 380)
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "middle")  
+            .style("font-size", "12px") 
+            .text("Emission Source");
+
+
     }
+
+    drawBarGraph()
 })

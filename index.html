@@ -198,7 +198,20 @@
 
             </div>
             <div>
-                <p>Miles driven per week</p><input  type="range" min="1" step='25' label=true value='290' max="290" id="milesInput" data-show-value='true'> <span  class="slider_label"></span>
+            <div id="milesDriven" class="slider mb-2"></div>
+            <label for="milesDriven" class="text-center">Miles Driven Per Week: </label>
+            <input type="text" id="MilesDrivenValue" readonly style="border:0; color:green; font-weight:bold;" >
+        </div>
+        <div>
+            <div id="electricityBill" class="slider mb-2"></div>
+            <label for="electrictyBill" class="text-center">Electricity bill as % of average American (943KwH per Month): </label>
+            <input type="text" id="electricityBillValue" readonly style="border:0; color:green; font-weight:bold;"> 
+        </div>
+        <div>
+            <div id="garbageVolume" class="slider mb-2"></div>
+            <label for="garbageVolume" class="text-center">Garbage volume as % of average American: </label>
+            <input type="text" id="garbageVolumeValue" readonly style="border:0; color:green; font-weight:bold;"> 
+        </div>
             <div id='individual_footprint'>
                 
             </div>
