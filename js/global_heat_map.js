@@ -52,6 +52,17 @@ $(function() {
         for(let i = 0; i < 21; i++) {
             setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
         }
+
+        let buttonData = [{label:"Reanimate", x:500, y:500}]
+
+        let button = d3.button()
+            .on("click", function(d, i) {console.log("pressed", d.text)})
+        
+        let buttonSelect = svg.selectAll(".button")
+            .data(buttonData)
+        .enter()
+            .append("g")
+            .call(button);
     });
 
     var color = d3.scaleLinear()

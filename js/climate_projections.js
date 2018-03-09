@@ -90,7 +90,6 @@ let x = d3.scaleLinear().range([0, width])
 let y = d3.scaleLinear().range([height, 0])
     .domain([-1, 4]);
 
-//   // Scale the range of the data ///////////////////////////////FIX THIS!!!!!!!!
 //   x.domain(d3.extent(data, function(d) { return d.date; }));
 //   y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
@@ -175,7 +174,6 @@ let y = d3.scaleLinear().range([height, 0])
             .attr("width", 18)
             .attr("height", 18)
             .style("fill", function(d, i) {return colors[i]});
-        
     }
 
 
