@@ -60,7 +60,7 @@ $(function () {
                                             .html("(" + data[i].decimal_date + ", " + data[i].average + ")");})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
-/*             svg.append('path')
+            svg.append('path')
                 .data([data])
                .attr("class", "line")
                .attr("transform", "translate(60,0)")
@@ -70,7 +70,7 @@ $(function () {
                 .on("mouseover", function(){return tooltip.style("visibility", "visible");})
                 .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
                                             .html("(" + data[i].decimal_date + ", " + 400 + ")");})
-                .on("mouseout", function(){return tooltip.style("visibility", "hidden");}); */
+                .on("mouseout", function(){return tooltip.style("visibility", "hidden");}); 
 
             //draws axis
             svg.append("g")
