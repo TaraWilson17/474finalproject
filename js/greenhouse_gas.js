@@ -61,17 +61,13 @@ $(function () {
                                             .html("(" + data[i].decimal_date + ", " + data[i].average + ")");})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
-/*             svg.append('path')
+             svg.append('path')
                 .data([data])
                .attr("class", "line")
                .attr("transform", "translate(60,0)")
                .style('stroke', 'red')
                .style('stroke-width', '3px')
                 .attr("d", line400)
-                .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-                .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-                                            .html("(" + data[i].decimal_date + ", " + 400 + ")");})
-                .on("mouseout", function(){return tooltip.style("visibility", "hidden");}); */
 
             //draws axis
             svg.append("g")
@@ -105,5 +101,42 @@ $(function () {
                 .style("font-size", "24px") 
                 .text("Greenhouse Gas Increases Over Time");
         }
+
+        let buttonData = [{label: "What is the significance of 400 ppm?", x:250, y:180, button:1, class:"ppm", text:"This means"},
+                        {label: "Why are there such dense oscillations?", x:520, y:500, button:2, class:"cycles", text:"These fluctuations represent the seasonal cycle"}]
+
+        let button = d3.button()
+            .on("press", function(d, i) {showText(d.text, d.x, d.y, d.button, d.class)})
+            .on("release", function(d, i) {removeText(d.class)});
+        
+        let buttons = svg.selectAll(".button")
+            .data(buttonData)
+        .enter()
+            .append("g")
+            .attr("class", "button")
+            .call(button);
+        
+        function showText(text, x, y, num, className) {
+            if(num === 1) {
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 170)
+                    .attr("y", y +60)
+                    .text(text)
+                    .style("opacity", 1);
+            } else {
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 180)
+                    .attr("y", y + 40)
+                    .text(text)
+                    .style("opacity", 1);
+            }
+        }
+
+        function removeText(className) {
+            d3.select("." + className).remove();
+        }
+
     });
 });

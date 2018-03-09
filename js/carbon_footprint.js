@@ -83,7 +83,6 @@ $(function() {
     function drawBarGraph() {
         var data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100, avgDiet, yourDiet]
        
-<<<<<<< HEAD
     var testLabels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
         xScale.domain(testLabels)
         yScale.domain([0, 12000])
