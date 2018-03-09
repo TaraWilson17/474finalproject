@@ -5,10 +5,20 @@ $(function() {
         width = +700 - margin.left - margin.right,
         height = +500 - margin.top - margin.bottom
 
+
+    var sum_margin = { top: 20, right: 20, bottom: 40, left: 60 },
+        sum_width = +350 - margin.left - margin.right,
+        sum_height = +500 - margin.top - margin.bottom
+
+     
     var xScale = d3.scaleBand()
           .range([0, width])
           .padding(0.1);
     var yScale = d3.scaleLinear().range([height, 0]);
+
+    var sum_xScale = d3.scaleBand()
+        .range([0, sum_width])
+        .padding(0.1);
     
     var carFootPrintYearly = 10484;
     var carMilesDriven = 11398;
@@ -68,7 +78,7 @@ $(function() {
     $('#garbageVolume').slider({
         range:false, min:0, max:100, value:100, slide: function(event, ui) {
             yourGarbage = ui.value
-            console.log(yourElectricity)
+            
             $('#garbageVolumeValue').val(ui.value)
             drawBarGraph();
         }
@@ -82,11 +92,17 @@ $(function() {
 
     function drawBarGraph() {
         var data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100, avgDiet, yourDiet]
+
+        var sum_data = [carFootPrintYearly + emissionsFromHome + emissionsFromGarbage + avgDiet, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven) + emissionsFromHome * yourElectricity/100 + emissionsFromGarbage * yourGarbage/100 + yourDiet]
        
-<<<<<<< HEAD
-    var testLabels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
-        xScale.domain(testLabels)
+    var Labels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
+
+    var sum_labels = ['Average Person', 'You']
+
+        xScale.domain(Labels)
         yScale.domain([0, 12000])
+
+        sum_xScale.domain(sum_labels)
 
         svg.selectAll('.bar').remove()
 
@@ -94,7 +110,7 @@ $(function() {
       .data(data)
         .enter().append("rect")
       .attr("class", "bar")
-      .attr("x", function(d, i) {return xScale(testLabels[i]) })
+      .attr("x", function(d, i) {return 10 +  xScale(Labels[i]) })
       .attr("width", 50)
       .attr("y", function(d, i) { return yScale(data[i]); })
       .attr("height", function(d, i) { return height - yScale(data[i]) })
@@ -103,6 +119,7 @@ $(function() {
   // add the x Axis
   svg.append("g")
       .attr("transform", "translate(0," + height + ")")
+     
       .call(d3.axisBottom(xScale));
 
   // add the y Axis
@@ -128,11 +145,85 @@ $(function() {
             .text("Emission Source");
 
 
-    //svg_summary
+        svg_summary.selectAll('.bar').remove()
 
+        xScale.domain(sum_labels)
+        yScale.domain([0, 25000])
+
+    svg_summary.selectAll(".bar")
+      .data(sum_data)
+        .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d, i) {return 30 + sum_xScale(sum_labels[i]) })
+      .attr("width", 50)
+      .attr("y", function(d, i) { return yScale(sum_data[i]); })
+      .attr("height", function(d, i) { return height - yScale(sum_data[i]) })
+      .style('fill', function(d, i) {return colors(i)});
+
+        svg_summary.append("g")
+      .attr("transform", "translate(0," + sum_height + ")")
+      .call(d3.axisBottom(sum_xScale) );
+
+  // add the y Axis
+  svg_summary.append("g")
+      .call(d3.axisLeft(yScale));
+
+    svg_summary.append("text")
+
+            .attr("transform", "rotate(-90)")
+            .attr("y", -60)
+            .attr("x", 0 - (height / 2))
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Pounds of CO2");
+
+        // Adds title to the visual
+        svg_summary.append("text")
+            .attr("x", (sum_width / 2))             
+            .attr("y", 480)
+            .style("text-anchor", "middle")
+            .attr("font-weight", "bold")
+            .text("Comparison");
+    
+   
 
 
     }
 
+    
+
+     var  models = ["Average Person", "You"]
+     let modelColors = ["gray", "green"]
+
+    function drawLegend(legend) {
+        //creates the legend elements
+       
+        var legend = svg.selectAll(".legend")
+            .data(models)
+            .enter()
+            .append('g')
+            .attr("class", "legend")
+            .attr("transform", function (d, i) { return "translate(0" + "," + i * 25 +  ")"; });
+
+        // draw legend text
+        legend.append("text")
+            .attr("x", width - 530)
+            .attr("y", 9)
+            .attr("font-weight", "bold")
+            .attr("dy", ".ƒ35em")
+            //.style("text-anchor", "end")
+            .text(function (d, i) {return models[i]; })
+        
+        // draw legend colored rectangles
+        legend.append("rect")
+            .attr("x", width - 560)
+            .attr("width", 18)
+            .attr("height", 18)
+            .style("fill", function(d, i) {return modelColors[i]});
+    }
+
+
     drawBarGraph()
+    drawLegend()
 })

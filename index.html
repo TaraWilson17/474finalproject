@@ -187,6 +187,7 @@
         <h3 class="ml-3">You can make a difference</h3>
         <div class="container">
             <div class="row">
+                <div class='col-6'
                 <p>While it may be easy to lose hope, there are simple changes you can do to really make a big differnce. 
                     A <a href="https://www.sciencedaily.com/releases/2008/04/080428120658.htm">study by MIT</a> found that the average 
                     carbon footprint for an average US citizen is 20 metric tons, while the world average is a mere 4 tons. This means our 
@@ -197,39 +198,43 @@
                 </p>
 
             </div>
-            <div>
-            <div id="milesDriven" class="slider mb-2"></div>
+        <div class='col-6'>
+        <div>
             <label for="milesDriven" class="text-center">Miles Driven Per Week: </label>
             <input type="text" id="MilesDrivenValue" readonly style="border:0; color:green; font-weight:bold;" >
+            <div id="milesDriven" class="slider mb-2"></div>
+
         </div>
         <div>
-            <div id="electricityBill" class="slider mb-2"></div>
-            <label for="electrictyBill" class="text-center">Electricity bill as % of average American (943KwH per Month): </label>
+            <label for="electrictyBill" class="text-center">Electricity as % of average American (943KwH per Month): </label>
             <input type="text" id="electricityBillValue" readonly style="border:0; color:green; font-weight:bold;"> 
+            <div id="electricityBill" class="slider mb-2"></div>
+
         </div>
         <div>
-            <div id="garbageVolume" class="slider mb-2"></div>
+            
             <label for="garbageVolume" class="text-center">Garbage volume as % of average American: </label>
-            <input type="text" id="garbageVolumeValue" readonly style="border:0; color:green; font-weight:bold;"> 
+            <input type="text" id="garbageVolumeValue" readonly style="border:0; color:green; font-weight:bold;">
+            <div id="garbageVolume" class="slider mb-2"></div>
         </div>
-        <div>
-           <h3>Diet Habits<select id='selectform'></h3>
+        <div class='mt-0 pt-0'>
+           <p class='p-0'>Diet Habits<select id='selectform'></p>
            <option value="15.8" selected='selected'>Heavy Meat Eater (3.5+ ounces per day)</option>
            <option value="12.4" >Medium Meat Eater (3.5-1.7 ounces per day)</option>
            <option value="10.3" >Low Meat Eater (1.7 ounces or less  per day)</option>
-           
            <option value="8.6">Pescatarian</option>
            <option value="8.4" >Vegetarian</option>
            <option value="6.4" >Vegan</option>
            </select>
         </div>
-            <div id='individual_footprint'>
-                
-            </div>
+        </div>
+        </div>
 
-            <div id='individual_footprint_summary'>
-                
-            </div>
+        <div class='row'>
+
+            <div id='individual_footprint' class='col-8'>  </div>
+
+            <div id='individual_footprint_summary' class='col-4'></div>
             </div>
         </div>
     </section>
