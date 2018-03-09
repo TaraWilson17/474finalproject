@@ -162,7 +162,7 @@ let y = d3.scaleLinear().range([height, 0])
         // draw legend text
         legend.append("text")
             .attr("x", width - 530)
-            .attr("y", 9)
+            .attr("y", 75)
             .attr("font-weight", "bold")
             .attr("dy", ".ƒ35em")
             //.style("text-anchor", "end")
@@ -171,9 +171,11 @@ let y = d3.scaleLinear().range([height, 0])
         // draw legend colored rectangles
         legend.append("rect")
             .attr("x", width - 560)
+            .attr("y", 59)
             .attr("width", 18)
             .attr("height", 18)
             .style("fill", function(d, i) {return colors[i]});
+        
     }
 
 

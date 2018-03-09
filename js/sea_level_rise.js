@@ -72,7 +72,7 @@
         waveAnimateTime: 18000, // The amount of time in milliseconds for a full wave to enter the wave circle.
         waveHeightScaling: true, // Controls wave size scaling at low and high fill percentages. When true, wave height reaches it's maximum at 50% fill, and minimum at 0% and 100% fill. This helps to prevent the wave from making the wave circle from appear totally full or empty when near it's minimum or maximum fill.
         valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading and updating. If false, the final value is displayed.
-        valueCountUpAtStart: true, // If set to false and valueCountUp at true, will disable only the initial animation
+        valueCountUpAtStart: false, // If set to false and valueCountUp at true, will disable only the initial animation
 
         // Text
         textVertPosition: 0.5, // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
