@@ -17,7 +17,8 @@ $(function() {
     var thisPersonsCar = 220;
     var yourElectricity = 100;
     var yourGarbage = 100;
-    
+    var avgDiet = 5767;
+    var yourDiet = 5767;
 
     function colors(x) {
         if(x % 2 == 1) {
@@ -26,6 +27,12 @@ $(function() {
             return 'gray'
         }
     }
+
+    var svg_summary = d3.select("#individual_footprint_summary").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     var svg = d3.select("#individual_footprint").append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -66,12 +73,17 @@ $(function() {
             drawBarGraph();
         }
     })
+
+    $('select').change(function () {
+        yourDiet = 365 * d3.select('select').property('value')
+        drawBarGraph();
+    })
     
 
     function drawBarGraph() {
-        var data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100]
+        var data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100, avgDiet, yourDiet]
        
-    var testLabels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage']
+    var testLabels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
         xScale.domain(testLabels)
         yScale.domain([0, 12000])
 
@@ -82,7 +94,7 @@ $(function() {
         .enter().append("rect")
       .attr("class", "bar")
       .attr("x", function(d, i) {return xScale(testLabels[i]) })
-      .attr("width", 60)
+      .attr("width", 50)
       .attr("y", function(d, i) { return yScale(data[i]); })
       .attr("height", function(d, i) { return height - yScale(data[i]) })
       .style('fill', function(d, i) {return colors(i)});
@@ -113,6 +125,8 @@ $(function() {
             .attr("text-anchor", "middle")  
             .style("font-size", "12px") 
             .text("Emission Source");
+
+    //svg_summary
 
 
     }
