@@ -82,7 +82,7 @@ $(function () {
                 .call(d3.axisLeft(y).tickFormat(d3.format("d")));
 
             svg.append("text")             
-                .attr("transform", "translate(" + (width/2) + " ," + (height + margin.top + 10) + ")")
+                .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
                 .text("Year");
