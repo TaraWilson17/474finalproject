@@ -49,8 +49,7 @@ $(function() {
         });
         dataset = data;
 
-        //drawVis(dataset, "1976", "1977");
-        for(var i = 0; i < 21; i++) {
+        for(let i = 0; i < 21; i++) {
             setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
         }
     });
@@ -77,6 +76,49 @@ $(function() {
                 let years = startYear + '-' + endYear;
                 return color(d[years]); 
             });
+
+        d3.select("text").remove();
+        
+        svg.append("text")
+            .attr("x", 90)
+            .attr("y", 500)
+            .attr("z", 100)
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "middle")
+            .style("font-size", "24px")
+            .text(startYear + "-" + endYear);
+        
+        // svg.append("g")
+        //     .attr("class", "legendLinear")
+        //     .attr("transform", "translate(20,20)");
+        
+        // let legendLinear = d3.legendColor()
+        //     .shapeWidth(30)
+        //     .orient("horizontal")
+        //     .scale(color);
+        
+        // svg.select(".legendLinear")
+        //     .call(legendLinear);
+
+        
+        //     var linear = d3.scaleLinear()
+        //     .domain([0,10])
+        //     .range(["rgb(46, 73, 123)", "rgb(71, 187, 94)"]);
+          
+        //   var svg = d3.select("svg");
+          
+        //   svg.append("g")
+        //     .attr("class", "legendLinear")
+        //     .attr("transform", "translate(20,20)");
+          
+        //   var legendLinear = d3.legendColor()
+        //     .shapeWidth(30)
+        //     .orient('horizontal')
+        //     .scale(linear);
+          
+        //   svg.select(".legendLinear")
+        //     .call(legendLinear);
+                    
     }
     
 });

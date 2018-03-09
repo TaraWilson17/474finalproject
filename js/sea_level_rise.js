@@ -1,6 +1,6 @@
 (function(d3) {
-    var idGenerator = (function() {
-        var count = 0;
+    let idGenerator = (function() {
+        let count = 0;
         return function(prefix) {
             return prefix + "-" + count++;
         };
@@ -18,21 +18,28 @@
                 d.UpperBound = +d.Upper_error_bound;
             });
         let dataset = data
-        drawSeaLevel(dataset);
+
+        drawSeaLevel(dataset, data[0].Adjusted_sea_level_inches);
         });
     }
 
-    function drawSeaLevel(data) { 
+    function drawSeaLevel(data, fillVal) { 
         let sl_svg = d3.select("#sea_level_rise_vis").append("svg")
             .attr("width", "97%")
             .attr("height", 500);
-        // {/* <svg id="fillgauge1" width="97%" height="250" onclick="gauge1.update(NewValue());"></svg>
 
         let sl_configure = defaultConfig;
-        let sl_fill = loadLiquidFillGauge(sl_svg, 55, sl_configure); //55 is MAX VALUE RIGHT NOW
+
+        // for(let i = 1; i < 134; i++) {
+        //     setTimeout(loadLiquidFillGauge, 1000 * i, sl_svg, data[i].Adjusted_sea_level_inches, sl_configure);
+        // }
+        
+        loadLiquidFillGauge(sl_svg, data[1].Adjusted_sea_level_inches, sl_configure);
+        loadLiquidFillGauge(sl_svg, data[50].Adjusted_sea_level_inches, sl_configure);
+        loadLiquidFillGauge(sl_svg, data[100].Adjusted_sea_level_inches, sl_configure);
     }
 
-    var defaultConfig = {
+    let defaultConfig = {
         // Values
         minValue: 0, // The gauge minimum value.
         maxValue: 100, // The gauge maximum value.
@@ -59,7 +66,7 @@
 
         // Animations
         waveRise: true, // Control if the wave should rise from 0 to it's full height, or start at it's full height.
-        waveRiseTime: 1000, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
+        waveRiseTime: 500, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
         waveRiseAtStart: true, // If set to false and waveRise at true, will disable only the initial animation
         waveAnimate: true, // Controls if the wave scrolls or is static.
         waveAnimateTime: 18000, // The amount of time in milliseconds for a full wave to enter the wave circle.
@@ -70,29 +77,29 @@
         // Text
         textVertPosition: 0.5, // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
         textSize: 1, // The relative height of the text to display in the wave circle. 1 = 50%
-        displayPercent: true, // If true, a % symbol is displayed after the value.
+        displayUnit: true, // If true, a % symbol is displayed after the value.
         textColor: "#045681", // The color of the value text when the wave does not overlap it.
         waveTextColor: "#A4DBf8", // The color of the value text when the wave overlaps it.
     };
 
     function loadLiquidFillGauge(g, value, settings) {
         // Handle configuration
-        var config = d3.map(defaultConfig);
+        let config = d3.map(defaultConfig);
         d3.map(settings).each(function(val, key) {
             config.set(key, val);
         });
 
         g.each(function(d) {
-            var gauge = d3.select(this);
+            let gauge = d3.select(this);
 
-            var width = config.get("width") !== 0 ? config.get("width") : parseInt(gauge.style("width"));
-            var height = config.get("height") !== 0 ? config.get("height") : parseInt(gauge.style("height"));
-            var radius = Math.min(width, height) / 2;
-            var locationX = width / 2 - radius;
-            var locationY = height / 2 - radius;
-            var fillPercent = Math.max(config.get("minValue"), Math.min(config.get("maxValue"), value)) / config.get("maxValue");
+            let width = config.get("width") !== 0 ? config.get("width") : parseInt(gauge.style("width"));
+            let height = config.get("height") !== 0 ? config.get("height") : parseInt(gauge.style("height"));
+            let radius = Math.min(width, height) / 2;
+            let locationX = width / 2 - radius;
+            let locationY = height / 2 - radius;
+            let fillPercent = Math.max(config.get("minValue"), Math.min(config.get("maxValue"), ((value / 15)/100))) / config.get("maxValue"); //FIX THIS!!!
 
-            var waveHeightScale;
+            let waveHeightScale;
             if (config.get("waveHeightScaling")) {
                 waveHeightScale = d3.scaleLinear()
                     .range([0, config.get("waveHeight"), 0])
@@ -103,22 +110,22 @@
                     .domain([0, 100]);
             }
 
-            var textPixels = (config.get("textSize") * radius / 2);
-            var textFinalValue = parseFloat(value).toFixed(2);
-            var textStartValue = config.get("valueCountUp") ? config.get("minValue") : textFinalValue;
-            var percentText = config.get("displayPercent") ? "%" : "";
-            var circleThickness = config.get("circleThickness") * radius;
-            var circleFillGap = config.get("circleFillGap") * radius;
-            var fillCircleMargin = circleThickness + circleFillGap;
-            var fillCircleRadius = radius - fillCircleMargin;
-            var waveHeight = fillCircleRadius * waveHeightScale(fillPercent * 100);
+            let textPixels = (config.get("textSize") * radius / 2);
+            let textFinalValue = parseFloat(value).toFixed(2);
+            let textStartValue = config.get("valueCountUp") ? config.get("minValue") : textFinalValue;
+            let percentText = config.get("displayUnit") ? "in" : "";
+            let circleThickness = config.get("circleThickness") * radius;
+            let circleFillGap = config.get("circleFillGap") * radius;
+            let fillCircleMargin = circleThickness + circleFillGap;
+            let fillCircleRadius = radius - fillCircleMargin;
+            let waveHeight = fillCircleRadius * waveHeightScale(fillPercent * 100);
 
-            var waveLength = fillCircleRadius * 2 / config.get("waveCount");
-            var waveClipCount = 1 + config.get("waveCount");
-            var waveClipWidth = waveLength * waveClipCount;
+            let waveLength = fillCircleRadius * 2 / config.get("waveCount");
+            let waveClipCount = 1 + config.get("waveCount");
+            let waveClipWidth = waveLength * waveClipCount;
 
             // Rounding functions so that the correct number of decimal places is always displayed as the value counts up.
-            var textRounder = function(value) {
+            let textRounder = function(value) {
                 return Math.round(value);
             };
             if (parseFloat(textFinalValue) != parseFloat(textRounder(textFinalValue))) {
@@ -133,8 +140,8 @@
             }
 
             // Data for building the clip wave area.
-            var data = [];
-            for (var i = 0; i <= 40 * waveClipCount; i++) {
+            let data = [];
+            for (let i = 0; i <= 40 * waveClipCount; i++) {
                 data.push({
                     x: i / (40 * waveClipCount),
                     y: (i / (40))
@@ -142,31 +149,31 @@
             }
 
             // Scales for drawing the outer circle.
-            var gaugeCircleX = d3.scaleLinear().range([0, 2 * Math.PI]).domain([0, 1]);
-            var gaugeCircleY = d3.scaleLinear().range([0, radius]).domain([0, radius]);
+            let gaugeCircleX = d3.scaleLinear().range([0, 2 * Math.PI]).domain([0, 1]);
+            let gaugeCircleY = d3.scaleLinear().range([0, radius]).domain([0, radius]);
 
             // Scales for controlling the size of the clipping path.
-            var waveScaleX = d3.scaleLinear().range([0, waveClipWidth]).domain([0, 1]);
-            var waveScaleY = d3.scaleLinear().range([0, waveHeight]).domain([0, 1]);
+            let waveScaleX = d3.scaleLinear().range([0, waveClipWidth]).domain([0, 1]);
+            let waveScaleY = d3.scaleLinear().range([0, waveHeight]).domain([0, 1]);
 
             // Scales for controlling the position of the clipping path.
-            var waveRiseScale = d3.scaleLinear()
+            let waveRiseScale = d3.scaleLinear()
             // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
             // such that the it will won't overlap the fill circle at all when at 0%, and will totally cover the fill
             // circle at 100%.
                 .range([(fillCircleMargin + fillCircleRadius * 2 + waveHeight), (fillCircleMargin - waveHeight)])
                 .domain([0, 1]);
-            var waveAnimateScale = d3.scaleLinear()
+            let waveAnimateScale = d3.scaleLinear()
                 .range([0, waveClipWidth - fillCircleRadius * 2]) // Push the clip area one full wave then snap back.
                 .domain([0, 1]);
 
             // Scale for controlling the position of the text within the gauge.
-            var textRiseScaleY = d3.scaleLinear()
+            let textRiseScaleY = d3.scaleLinear()
                 .range([fillCircleMargin + fillCircleRadius * 2, (fillCircleMargin + textPixels * 0.7)])
                 .domain([0, 1]);
 
             // Center the gauge within the parent
-            var gaugeGroup = gauge.append("g")
+            let gaugeGroup = gauge.append("g")
                 .attr('transform', 'translate(' + locationX + ',' + locationY + ')');
 
             // Draw the background circle
@@ -178,7 +185,7 @@
             }
 
             // Draw the outer circle.
-            var gaugeCircleArc = d3.arc()
+            let gaugeCircleArc = d3.arc()
                 .startAngle(gaugeCircleX(0))
                 .endAngle(gaugeCircleX(1))
                 .outerRadius(gaugeCircleY(radius))
@@ -189,7 +196,7 @@
                 .attr('transform', 'translate(' + radius + ',' + radius + ')');
 
             // Text where the wave does not overlap.
-            var text1 = gaugeGroup.append("text")
+            let text1 = gaugeGroup.append("text")
                 .attr("class", "liquidFillGaugeText")
                 .attr("text-anchor", "middle")
                 .attr("font-size", textPixels + "px")
@@ -197,7 +204,7 @@
                 .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.get("textVertPosition")) + ')');
 
             // The clipping wave area.
-            var clipArea = d3.area()
+            let clipArea = d3.area()
                 .x(function(d) {
                     return waveScaleX(d.x);
                 })
@@ -208,18 +215,18 @@
                     return (fillCircleRadius * 2 + waveHeight);
                 });
 
-            var gaugeGroupDefs = gaugeGroup.append("defs");
+            let gaugeGroupDefs = gaugeGroup.append("defs");
 
-            var clipId = idGenerator("clipWave");
-            var waveGroup = gaugeGroupDefs
+            let clipId = idGenerator("clipWave");
+            let waveGroup = gaugeGroupDefs
                 .append("clipPath")
                 .attr("id", clipId);
-            var wave = waveGroup.append("path")
+            let wave = waveGroup.append("path")
                 .datum(data)
                 .attr("d", clipArea);
 
             // The inner circle with the clipping wave attached.
-            var fillCircleGroup = gaugeGroup.append("g")
+            let fillCircleGroup = gaugeGroup.append("g")
                 .attr("clip-path", "url(#" + clipId + ")");
             fillCircleGroup.append("circle")
                 .attr("cx", radius)
@@ -227,9 +234,9 @@
                 .attr("r", fillCircleRadius);
 
             if (config.get("fillWithGradient")) {
-                var points = config.get("gradientPoints");
-                var gradientId = idGenerator("linearGradient");
-                var grad = gaugeGroupDefs.append("linearGradient")
+                let points = config.get("gradientPoints");
+                let gradientId = idGenerator("linearGradient");
+                let grad = gaugeGroupDefs.append("linearGradient")
                     .attr("id", gradientId)
                     .attr("x1", points[0])
                     .attr("y1", points[1])
@@ -248,7 +255,7 @@
             }
 
             // Text where the wave does overlap.
-            var text2 = fillCircleGroup.append("text")
+            let text2 = fillCircleGroup.append("text")
                 .attr("class", "liquidFillGaugeText")
                 .attr("text-anchor", "middle")
                 .attr("font-size", textPixels + "px")
@@ -256,10 +263,10 @@
                 .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.get("textVertPosition")) + ')');
 
             // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
-            var waveGroupXPosition = fillCircleMargin + fillCircleRadius * 2 - waveClipWidth;
+            let waveGroupXPosition = fillCircleMargin + fillCircleRadius * 2 - waveClipWidth;
 
             if (config.get("waveAnimate")) {
-                var animateWave = function() {
+                let animateWave = function() {
                     wave.transition()
                         .duration(config.get("waveAnimateTime"))
                         .ease(d3.easeLinear)
@@ -272,12 +279,14 @@
                 animateWave();
             }
 
-            var transition = function(from, to, riseWave, animateText) {
+            d3.select(".liquidFillGaugeText").remove(); // ADDED THIS!!!!!!!!!!!!!!!!!!!!!1
+
+            let transition = function(from, to, riseWave, animateText) {
                 // Update texts and animate
                 if (animateText) {
-                    var textTween = function() {
-                        var that = d3.select(this);
-                        var i = d3.interpolate(from, to);
+                    let textTween = function() {
+                        let that = d3.select(this);
+                        let i = d3.interpolate(from, to);
                         return function(t) {
                             that.text(textRounder(i(t)) + percentText);
                         };
