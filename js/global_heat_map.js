@@ -3,25 +3,50 @@ function reanimateMap() {
 }
 
 $(function() {
-    var width = 1000;
-    var height = 500;
-    
-    var dataset;
+    let color = d3.scaleLinear()
+        .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
+        .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
 
-    var svg = d3.select("#global_heat_pattern_vis").append("svg")
+    let leg = d3.select("#map_legend").append("svg");
+
+    leg 
+        .attr("height", 70)
+        .attr("width", 350)
+
+    leg.append("g")
+        .attr("class", "legendLinear")
+        .attr("transform", "translate(20,20)");
+
+    let legendLinear = d3.legendColor()
+        .shapeWidth(40)
+        .cells(7)
+        .orient("horizontal")
+        .scale(color);
+
+    leg.select(".legendLinear")
+        .call(legendLinear);
+
+
+    let width = 1000;
+    let height = 500;
     
-    var projection = d3.geoMercator()
+    let dataset;
+
+    let svg = d3.select("#global_heat_pattern_vis").append("svg");
+    
+    let projection = d3.geoMercator()
       .scale(width / 2 / Math.PI)
       .translate([width / 2, height / 2])
 
-    var path = d3.geoPath()
+    let path = d3.geoPath()
       .projection(projection);
     
-    var url = "https://enjalot.github.io/wwsd/data/world/world-110m.geojson";
+    let url = "https://enjalot.github.io/wwsd/data/world/world-110m.geojson";
     d3.json(url, function(err, geojson) {
       svg.append("path")
         .attr("d", path(geojson))
     })
+
 
     d3.csv("data/global_heat_index_data.csv", function (error, data) {
         if (error) return console.warn(error);
@@ -57,13 +82,25 @@ $(function() {
             setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
         }
 
+        let animateMap = document.createElement("button");
+        animateMap.classList.add("ml-5","btn", "btn-success", "text-center", "text-dark");
+        let t = document.createTextNode("Reanimate Map");
+        animateMap.appendChild(t);
+        animateMap.onclick = function(){for(let i = 0; i < 21; i++) {
+                                                setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
+                                            }};
+        document.querySelector("#reanimate_graph_button").appendChild(animateMap);
+        
     });
 
-    var color = d3.scaleLinear()
-        .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
-        .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
-
     function drawVis(data, startYear, endYear) {
+        d3.selectAll(".mapTitle").remove();
+
+        let color = d3.scaleLinear()
+            .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
+            .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
+
+
         let circles = svg.selectAll("circle")
             .data(data)
         circles.exit().remove()
@@ -81,49 +118,16 @@ $(function() {
                 let years = startYear + '-' + endYear;
                 return color(d[years]); 
             });
-
-        d3.select("text").remove();
         
         svg.append("text")
-            .attr("x", 90)
-            .attr("y", 500)
+            .attr("x", 140)
+            .attr("y", 520)
             .attr("z", 100)
+            .attr("class", "mapTitle")
             .attr("font-weight", "bold")
             .attr("text-anchor", "middle")
-            .style("font-size", "24px")
+            .style("font-size", "34px")
             .text(startYear + "-" + endYear);
-        
-        // svg.append("g")
-        //     .attr("class", "legendLinear")
-        //     .attr("transform", "translate(20,20)");
-        
-        // let legendLinear = d3.legendColor()
-        //     .shapeWidth(30)
-        //     .orient("horizontal")
-        //     .scale(color);
-        
-        // svg.select(".legendLinear")
-        //     .call(legendLinear);
-
-        
-        //     var linear = d3.scaleLinear()
-        //     .domain([0,10])
-        //     .range(["rgb(46, 73, 123)", "rgb(71, 187, 94)"]);
-          
-        //   var svg = d3.select("svg");
-          
-        //   svg.append("g")
-        //     .attr("class", "legendLinear")
-        //     .attr("transform", "translate(20,20)");
-          
-        //   var legendLinear = d3.legendColor()
-        //     .shapeWidth(30)
-        //     .orient('horizontal')
-        //     .scale(linear);
-          
-        //   svg.select(".legendLinear")
-        //     .call(legendLinear);
-                    
     }
     
 });
