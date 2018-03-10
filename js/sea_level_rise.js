@@ -19,24 +19,24 @@
             });
         let dataset = data
 
-        drawSeaLevel(dataset, data[0].Adjusted_sea_level_inches);
+        drawSeaLevel();
         });
     }
 
-    function drawSeaLevel(data, fillVal) { 
+    //function drawSeaLevel(data, fillVal) { 
+    function drawSeaLevel() { 
+        let animateSeaLevel = document.createElement("button");
+        animateSeaLevel.classList.add("mt-5", "col", "text-center", "btn-secondary", "seaLevelButton");
+        let t = document.createTextNode("Watch how sea level has risen since 1880");
+        animateSeaLevel.appendChild(t);
+        animateSeaLevel.onclick = function(){loadLiquidFillGauge(sl_svg, 8.98, sl_configure)};
+        document.querySelector("#sea_level_rise_button").appendChild(animateSeaLevel);
+
         let sl_svg = d3.select("#sea_level_rise_vis").append("svg")
             .attr("width", "97%")
             .attr("height", 500);
 
         let sl_configure = defaultConfig;
-
-        // for(let i = 1; i < 134; i++) {
-        //     setTimeout(loadLiquidFillGauge, 1000 * i, sl_svg, data[i].Adjusted_sea_level_inches, sl_configure);
-        // }
-        
-        loadLiquidFillGauge(sl_svg, data[1].Adjusted_sea_level_inches, sl_configure);
-        loadLiquidFillGauge(sl_svg, data[50].Adjusted_sea_level_inches, sl_configure);
-        loadLiquidFillGauge(sl_svg, data[100].Adjusted_sea_level_inches, sl_configure);
     }
 
     let defaultConfig = {
@@ -60,19 +60,19 @@
         gradientToColor: "#000",
 
         // Waves
-        waveHeight: 0.05, // The wave height as a percentage of the radius of the wave circle.
-        waveCount: 1, // The number of full waves per width of the wave circle.
+        waveHeight: 0.005, // The wave height as a percentage of the radius of the wave circle.
+        waveCount: 4, // The number of full waves per width of the wave circle.
         waveOffset: 0, // The amount to initially offset the wave. 0 = no offset. 1 = offset of one full wave.
 
         // Animations
         waveRise: true, // Control if the wave should rise from 0 to it's full height, or start at it's full height.
-        waveRiseTime: 500, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
+        waveRiseTime: 10000, // The amount of time in milliseconds for the wave to rise from 0 to it's final height.
         waveRiseAtStart: true, // If set to false and waveRise at true, will disable only the initial animation
         waveAnimate: true, // Controls if the wave scrolls or is static.
         waveAnimateTime: 18000, // The amount of time in milliseconds for a full wave to enter the wave circle.
         waveHeightScaling: true, // Controls wave size scaling at low and high fill percentages. When true, wave height reaches it's maximum at 50% fill, and minimum at 0% and 100% fill. This helps to prevent the wave from making the wave circle from appear totally full or empty when near it's minimum or maximum fill.
         valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading and updating. If false, the final value is displayed.
-        valueCountUpAtStart: false, // If set to false and valueCountUp at true, will disable only the initial animation
+        valueCountUpAtStart: true, // If set to false and valueCountUp at true, will disable only the initial animation
 
         // Text
         textVertPosition: 0.5, // The height at which to display the percentage text withing the wave circle. 0 = bottom, 1 = top.
@@ -83,6 +83,7 @@
     };
 
     function loadLiquidFillGauge(g, value, settings) {
+        d3.selectAll(".liquidFillGaugeText").remove(); 
         // Handle configuration
         let config = d3.map(defaultConfig);
         d3.map(settings).each(function(val, key) {
@@ -97,7 +98,8 @@
             let radius = Math.min(width, height) / 2;
             let locationX = width / 2 - radius;
             let locationY = height / 2 - radius;
-            let fillPercent = Math.max(config.get("minValue"), Math.min(config.get("maxValue"), ((value / 15)/100))) / config.get("maxValue"); //FIX THIS!!!
+            //let fillPercent = Math.max(config.get("minValue"), Math.min(config.get("maxValue"), ((value / 15)/100))) / config.get("maxValue"); //FIX THIS!!!
+            let fillPercent = Math.max((10 * value), 0) / (config.get("maxValue") / 10);
 
             let waveHeightScale;
             if (config.get("waveHeightScaling")) {
@@ -126,7 +128,7 @@
 
             // Rounding functions so that the correct number of decimal places is always displayed as the value counts up.
             let textRounder = function(value) {
-                return Math.round(value);
+                return Math.round(value) /10;
             };
             if (parseFloat(textFinalValue) != parseFloat(textRounder(textFinalValue))) {
                 textRounder = function(value) {
@@ -279,8 +281,6 @@
                 animateWave();
             }
 
-            d3.select(".liquidFillGaugeText").remove(); // ADDED THIS!!!!!!!!!!!!!!!!!!!!!1
-
             let transition = function(from, to, riseWave, animateText) {
                 // Update texts and animate
                 if (animateText) {
@@ -310,7 +310,7 @@
                     waveGroup.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fromPercent) + ')')
                         .transition()
                         .duration(config.get("waveRiseTime"))
-                        .attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(toPercent) + ')');
+                        .attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(toPercent * 10) + ')');
                 } else {
                     waveGroup.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(toPercent) + ')');
                 }

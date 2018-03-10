@@ -1,3 +1,7 @@
+function reanimateMap() {
+    console.log("A");
+}
+
 $(function() {
     var width = 1000;
     var height = 500;
@@ -53,20 +57,10 @@ $(function() {
             setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
         }
 
-        let buttonData = [{label:"Reanimate", x:500, y:500}]
-
-        let button = d3.button()
-            .on("click", function(d, i) {console.log("pressed", d.text)})
-        
-        let buttonSelect = svg.selectAll(".button")
-            .data(buttonData)
-        .enter()
-            .append("g")
-            .call(button);
     });
 
     var color = d3.scaleLinear()
-        .domain([-1, -0.5, 0, 0.5, 1, 1.5, 2])
+        .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
         .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
 
     function drawVis(data, startYear, endYear) {
