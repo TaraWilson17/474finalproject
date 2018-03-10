@@ -90,7 +90,6 @@ let x = d3.scaleLinear().range([0, width])
 let y = d3.scaleLinear().range([height, 0])
     .domain([-1, 4]);
 
-//   // Scale the range of the data ///////////////////////////////FIX THIS!!!!!!!!
 //   x.domain(d3.extent(data, function(d) { return d.date; }));
 //   y.domain([0, d3.max(data, function(d) { return d.close; })]);
 
@@ -162,7 +161,7 @@ let y = d3.scaleLinear().range([height, 0])
         // draw legend text
         legend.append("text")
             .attr("x", width - 530)
-            .attr("y", 9)
+            .attr("y", 75)
             .attr("font-weight", "bold")
             .attr("dy", ".ƒ35em")
             //.style("text-anchor", "end")
@@ -171,6 +170,7 @@ let y = d3.scaleLinear().range([height, 0])
         // draw legend colored rectangles
         legend.append("rect")
             .attr("x", width - 560)
+            .attr("y", 59)
             .attr("width", 18)
             .attr("height", 18)
             .style("fill", function(d, i) {return colors[i]});

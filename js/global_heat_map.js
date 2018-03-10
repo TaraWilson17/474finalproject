@@ -1,3 +1,7 @@
+function reanimateMap() {
+    console.log("A");
+}
+
 $(function() {
     var width = 1000;
     var height = 500;
@@ -13,7 +17,7 @@ $(function() {
     var path = d3.geoPath()
       .projection(projection);
     
-    var url = "http://enjalot.github.io/wwsd/data/world/world-110m.geojson";
+    var url = "https://enjalot.github.io/wwsd/data/world/world-110m.geojson";
     d3.json(url, function(err, geojson) {
       svg.append("path")
         .attr("d", path(geojson))
@@ -49,32 +53,15 @@ $(function() {
         });
         dataset = data;
 
-        //drawVis(dataset, "1976", "1977");
-        for(var i = 0; i < 21; i++) {
+        for(let i = 0; i < 21; i++) {
             setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
         }
+
     });
 
     var color = d3.scaleLinear()
-        .domain([-1, -0.5, 0, 0.5, 1, 1.5, 2])
+        .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
         .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
-
-    // function drawVis(data) {
-    //     let startYear = 1976;
-    //     let endYear = 1977;
-    //     for(let i = 0; i < 22; i++) {
-    //         svg.selectAll("circle")
-    //             .data(data).enter()
-    //             .append("circle")
-    //             .attr("cx", function(d) { return projection([d.Longitude, d.Latitude])[0];})
-    //             .attr("cy", function(d) { return projection([d.Longitude, d.Latitude])[1];; })
-    //             .attr("r", "3px")
-    //             .style("fill", function(d) { 
-    //                 let years = (startYear + i) + '-' + (endYear + i);
-    //                 return color(d[years]); 
-    //             });
-    //     }
-    // }
 
     function drawVis(data, startYear, endYear) {
         let circles = svg.selectAll("circle")
@@ -94,6 +81,49 @@ $(function() {
                 let years = startYear + '-' + endYear;
                 return color(d[years]); 
             });
+
+        d3.select("text").remove();
+        
+        svg.append("text")
+            .attr("x", 90)
+            .attr("y", 500)
+            .attr("z", 100)
+            .attr("font-weight", "bold")
+            .attr("text-anchor", "middle")
+            .style("font-size", "24px")
+            .text(startYear + "-" + endYear);
+        
+        // svg.append("g")
+        //     .attr("class", "legendLinear")
+        //     .attr("transform", "translate(20,20)");
+        
+        // let legendLinear = d3.legendColor()
+        //     .shapeWidth(30)
+        //     .orient("horizontal")
+        //     .scale(color);
+        
+        // svg.select(".legendLinear")
+        //     .call(legendLinear);
+
+        
+        //     var linear = d3.scaleLinear()
+        //     .domain([0,10])
+        //     .range(["rgb(46, 73, 123)", "rgb(71, 187, 94)"]);
+          
+        //   var svg = d3.select("svg");
+          
+        //   svg.append("g")
+        //     .attr("class", "legendLinear")
+        //     .attr("transform", "translate(20,20)");
+          
+        //   var legendLinear = d3.legendColor()
+        //     .shapeWidth(30)
+        //     .orient('horizontal')
+        //     .scale(linear);
+          
+        //   svg.select(".legendLinear")
+        //     .call(legendLinear);
+                    
     }
     
 });

@@ -60,3 +60,50 @@ p {
 .selectform {
     font-size: 8px
 }
+.tooltip {
+    background-color: white;
+    border: 1px solid black;
+    font-weight: bold;
+}
+
+body {
+    font-family: Univers, Arial, sans-serif;
+  }
+  
+  .button rect {
+    stroke: #999faa; /* navy 40% */
+    stroke-width: 1px;
+  }
+  
+  .button rect.pressed {
+    fill: #8e929b; /* navy 100% */
+  }
+  
+  .button #gradient-start {
+    stop-color: #c2c3c5; /* navy 40% */
+    stop-opacity: 1;
+  }
+  
+  .button #gradient-stop {
+    stop-color: #b6bcc7; /* navy 70% */
+    stop-opacity: 1;
+  }
+  
+  .button #gradient-start.active, .button #gradient-start.pressed {
+    stop-color: #8e929b; /* navy 70% */
+  }
+  
+  .button #gradient-stop.active, .button #gradient-stop.pressed {
+    stop-color: #8e929b; /* navy 100% */
+  }
+  
+  .button text {
+    font-size: 16px;
+    color: black;
+    pointer-events: none;
+    text-anchor: middle;
+  }
+
+  .seaLevelButton {
+      max-width: 50%;
+  }

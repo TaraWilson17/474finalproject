@@ -1,21 +1,21 @@
 $(function () {
     //create window for viz
-    var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+    let margin = { top: 220, right: 20, bottom: 40, left: 60 },
         //width = d3.select('#greenhouse_gas_vis').attr('width')
         width = +700 - margin.left - margin.right,
-        height = +500 - margin.top - margin.bottom
+        height = +900 - margin.top - margin.bottom
         //height = d3.select('#greenhouse_gas_vis').attr('height')
 
-     var svg = d3.select("#greenhouse_gas_vis")
+     let svg = d3.select("#greenhouse_gas_vis")
         .append("svg")
         //.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
         .attr('height', '100%')
         .attr('width', '100%');
     
-    var x = d3.scaleLinear()                
+    let x = d3.scaleLinear()                
         .range([0, width]);
     
-    var y = d3.scaleLinear()
+    let y = d3.scaleLinear()
         .range([height, 0]);
 
     let dataline = d3.line()
@@ -26,26 +26,27 @@ $(function () {
         .x(function(d) {; return x(d.decimal_date)})
         .y(function(d) {return y(400)})
 
-    var tooltip = d3.select("body")
+    let tooltip = d3.select("body")
         .append("div")
         .style("position", "absolute")
         .style("z-index", "10")
         .style("visibility", "hidden");
 
-    d3.csv('../data/co2data_monthly_clean.csv', function (data) {
+    d3.csv('data/co2data_monthly_clean.csv', function (data) {
         
         //calls the method to draw the viz
         drawVis(data)
 
         function drawVis(data) {
 
-            var div = d3.select("body").append("div")
+            let div = d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
             
-            x.domain([d3.min(data, function (d, i) { return data[i].decimal_date }), d3.max(data, function (d, i) { return data[i].decimal_date })])
-
-            y.domain([d3.min(data, function (d, i) { return data[i].average }), d3.max(data, function (d, i) { return data[i].average })])
+            //x.domain([d3.min(data, function (d, i) { return data[i].decimal_date }), d3.max(data, function (d, i) { return data[i].decimal_date })])
+            x.domain([1958, 2016]);
+            //y.domain([d3.min(data, function (d, i) { return data[i].average }), d3.max(data, function (d, i) { return data[i].average })])
+            y.domain([300, 450]);
 
             svg.append('path')
                 .data([data])
@@ -57,7 +58,7 @@ $(function () {
                 .attr("d", dataline)
                 .on("mouseover", function(){return tooltip.style("visibility", "visible");})
                 .on("mousemove", function(data, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-                                            .html("(" + data[i].decimal_date + ", " + data[i].average + ")");})
+                                            .html("(" + Math.round(data[i].decimal_date) + ": " + data[i].average + ")");})
                 .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
             svg.append('path')
@@ -81,7 +82,7 @@ $(function () {
                 .call(d3.axisLeft(y).tickFormat(d3.format("d")));
 
             svg.append("text")             
-                .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
+                .attr("transform", "translate(" + (width / 2) + " ," + (height + 40) + ")")
                 .style("text-anchor", "middle")
                 .attr("font-weight", "bold")
                 .text("Year");
@@ -104,5 +105,45 @@ $(function () {
                 .style("font-size", "24px") 
                 .text("Greenhouse Gas Increases Over Time");
         }
+
+        let buttonData = [{label: "What is the significance of 400 ppm?", x:250, y:185, button:1, class:"ppm", 
+                            text:"400 ppm means out of every 1 million particles of air, 400 of them are carbon dioxide. This is a threshold that hasn't been reached since the stone age."},
+                        {label: "Why are there such dense oscillations?", x:475, y:500, button:2, class:"cycles", text:"These fluctuations represent the seasonal cycle"}]
+
+        let button = d3.button()
+            .on("press", function(d, i) {showText(d.text, d.x, d.y, d.button, d.class)})
+            .on("release", function(d, i) {removeText(d.class)});
+        
+        let buttons = svg.selectAll(".button")
+            .data(buttonData)
+        .enter()
+            .append("g")
+            .attr("class", "button")
+            .call(button);
+        
+        function showText(text, x, y, num, className) {
+            if(num === 1) {
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 170)
+                    .attr("y", y +60)
+                    .text(text)
+                    .style("font-size", "20px") 
+                    .style("opacity", 1);
+            } else {
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 180)
+                    .attr("y", y + 40)
+                    .text(text)
+                    .style("font-size", "20px") 
+                    .style("opacity", 1);
+            }
+        }
+
+        function removeText(className) {
+            d3.select("." + className).remove();
+        }
+
     });
 });

@@ -26,11 +26,12 @@ $(function() {
                 .x(function(d) { return xScale(d['Year']);})
                 .y(function(d) { return yScale(d["Annual Mean"]);});
     
-    var tooltip = d3.select("body")
-                    .append("div")
-                    .style("position", "absolute")
-                    .style("z-index", "10")
-                    .style("visibility", "hidden");
+    // var tooltip = d3.select("body")
+    //                 .append("div")
+    //                 .style("position", "absolute")
+    //                 .style("z-index", "10")
+    //                 .style("visibility", "hidden");
+
 
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
@@ -101,18 +102,49 @@ $(function() {
                 .attr("cx", xMap)
                 .attr("cy", yMap)
         
+        let div = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("opacity, 0");
+        
+        let tooltip = d3.select(".tooltip");
+
         svg.append("path")
             .data([dataset])
             .attr("class", "line")
-            .style('stroke', 'red')
-            .style('stroke-width', '2px')
-            .style('fill', 'none')
+            .style("stroke", "red")
+            .style("stroke-width", "3px")
+            .style("fill", "none")
             .attr("d", line)
-            .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-            .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-                                        .html("(" + dataset[i].Year + ", " + dataset[i]["Lowess Smoothing"] + ")" +
-                                            "<br/> Annual Mean " + dataset[i]["Annual Mean"]);})
-            .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+            .on("mouseover", function(d, i) {
+                d3.select(this).attr("stroke-width", "7px");
+                tooltip.transition()
+                    .duration(200)
+                    .style("opacity", 0.9)
+                tooltip
+                    .html(dataset[i].Year + ": " + dataset[i]["Lowess Smoothing"] + "<br/> Annual Mean " + dataset[i]["Annual Mean"])
+                    .style("top", (event.pageY-10)+"px")
+                    .style("left",(event.pageX+10)+"px");
+            })
+            .on("mouseout", function(d) {
+                d3.select(this).attr("stroke-width", "2px");
+                tooltip.transition()
+                    .duration(500)
+                    .style("opacity", 0)
+            })
+        
+        // svg.append("path")
+        //     .data([dataset])
+        //     .attr("class", "line")
+        //     .style('stroke', 'red')
+        //     .style('stroke-width', '2px')
+        //     .style('fill', 'none')
+        //     .attr("d", line)
+        //     .on("mouseover", function(){return tooltip.style("visibility", "visible");})
+        //     .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
+        //                                 .html("(" + dataset[i].Year + ", " + dataset[i]["Lowess Smoothing"] + ")" +
+        //                                     "<br/> Annual Mean " + dataset[i]["Annual Mean"]);})
+        //     .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
 
     }
 });
