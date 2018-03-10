@@ -95,7 +95,7 @@ $(function() {
 
         var sum_data = [carFootPrintYearly + emissionsFromHome + emissionsFromGarbage + avgDiet, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven) + emissionsFromHome * yourElectricity/100 + emissionsFromGarbage * yourGarbage/100 + yourDiet]
        
-    var Labels = [ 'Average Car', ' Your Car', 'Average electricity', 'Your electricity', 'Average garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
+    var Labels = [ 'Average Car', ' Your Car', 'Average Electricity', 'Your Electricity', 'Average Garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
 
     var sum_labels = ['Average Person', 'You']
 
@@ -127,7 +127,6 @@ $(function() {
       .call(d3.axisLeft(yScale));
 
     svg.append("text")
-
             .attr("transform", "rotate(-90)")
             .attr("y", -60)
             .attr("x", 0 - (height / 2))
@@ -160,16 +159,15 @@ $(function() {
       .attr("height", function(d, i) { return height - yScale(sum_data[i]) })
       .style('fill', function(d, i) {return colors(i)});
 
-        svg_summary.append("g")
-      .attr("transform", "translate(0," + sum_height + ")")
-      .call(d3.axisBottom(sum_xScale) );
+    svg_summary.append("g")
+                .attr("transform", "translate(0," + sum_height + ")")
+                .call(d3.axisBottom(sum_xScale) );
 
   // add the y Axis
   svg_summary.append("g")
       .call(d3.axisLeft(yScale));
 
     svg_summary.append("text")
-
             .attr("transform", "rotate(-90)")
             .attr("y", -60)
             .attr("x", 0 - (height / 2))
@@ -185,13 +183,7 @@ $(function() {
             .style("text-anchor", "middle")
             .attr("font-weight", "bold")
             .text("Comparison");
-    
-   
-
-
     }
-
-    
 
      var  models = ["Average Person", "You"]
      let modelColors = ["gray", "green"]

@@ -12,6 +12,9 @@ $(function() {
     var xValue = function (d) { return d.Year; }, // data -> value
         xMap = function (d) { return xScale(xValue(d)); }; // data -> display
 
+    var parseTime = d3.timeParse("%Y")
+        bisectYear = d3.bisector(function(d) { return d.Year; }).left;
+
     // setup y
     var yValue = function (d) { return d["Lowess Smoothing"]; }, // data -> value
         yMap = function (d) { return yScale(yValue(d)); }; // data -> display
@@ -26,12 +29,6 @@ $(function() {
                 .x(function(d) { return xScale(d['Year']);})
                 .y(function(d) { return yScale(d["Annual Mean"]);});
     
-    // var tooltip = d3.select("body")
-    //                 .append("div")
-    //                 .style("position", "absolute")
-    //                 .style("z-index", "10")
-    //                 .style("visibility", "hidden");
-
 
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
@@ -49,7 +46,7 @@ $(function() {
     function drawVis(dataset) {
 
         svg.selectAll("g")
-        .remove();
+            .remove();
 
         xScale.domain([1880, 2017]);
         yScale.domain([-0.49, 0.99]);
@@ -101,13 +98,6 @@ $(function() {
             dots
                 .attr("cx", xMap)
                 .attr("cy", yMap)
-        
-        let div = d3.select("body")
-            .append("div")
-            .attr("class", "tooltip")
-            .style("opacity, 0");
-        
-        let tooltip = d3.select(".tooltip");
 
         svg.append("path")
             .data([dataset])
@@ -115,36 +105,53 @@ $(function() {
             .style("stroke", "red")
             .style("stroke-width", "3px")
             .style("fill", "none")
-            .attr("d", line)
-            .on("mouseover", function(d, i) {
-                d3.select(this).attr("stroke-width", "7px");
-                tooltip.transition()
-                    .duration(200)
-                    .style("opacity", 0.9)
-                tooltip
-                    .html(dataset[i].Year + ": " + dataset[i]["Lowess Smoothing"] + "<br/> Annual Mean " + dataset[i]["Annual Mean"])
-                    .style("top", (event.pageY-10)+"px")
-                    .style("left",(event.pageX+10)+"px");
-            })
-            .on("mouseout", function(d) {
-                d3.select(this).attr("stroke-width", "2px");
-                tooltip.transition()
-                    .duration(500)
-                    .style("opacity", 0)
-            })
-        
-        // svg.append("path")
-        //     .data([dataset])
-        //     .attr("class", "line")
-        //     .style('stroke', 'red')
-        //     .style('stroke-width', '2px')
-        //     .style('fill', 'none')
-        //     .attr("d", line)
-        //     .on("mouseover", function(){return tooltip.style("visibility", "visible");})
-        //     .on("mousemove", function(d, i){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px")
-        //                                 .html("(" + dataset[i].Year + ", " + dataset[i]["Lowess Smoothing"] + ")" +
-        //                                     "<br/> Annual Mean " + dataset[i]["Annual Mean"]);})
-        //     .on("mouseout", function(){return tooltip.style("visibility", "hidden");});
+            .attr("d", line);
+
+        var focus = svg.append("g")
+            .attr("class", "focus")
+            .style("display", "none");
+    
+        focus.append("line")
+            .attr("class", "x-hover-line hover-line")
+            .attr("y1", 0)
+            .attr("y2", height);
+    
+        focus.append("line")
+            .attr("class", "y-hover-line hover-line")
+            .attr("x1", width)
+            .attr("x2", width);
+    
+        focus.append("circle")
+            .attr("r", 7.5);
+
+        focus.append("text")
+            .attr("x", 15)
+            .style("top", (event.pageY-10)+"px")
+            .attr("font-weight", "bold")
+            .style("font-size", "15px") 
+            .attr("dy", ".31em");
+    
+        svg.append("rect")
+            .attr("transform", "translate(" + 0 + "," + 0 + ")")
+            .attr("class", "overlay")
+            .attr("class", "tooltip")
+            .attr("width", width)
+            .attr("height", height)
+            .on("mouseover", function() { focus.style("display", null); })
+            .on("mouseout", function() { focus.style("display", "none"); })
+            .on("mousemove", mousemove);
+    
+        function mousemove() {
+            var x0 = xScale.invert(d3.mouse(this)[0]), 
+                i = bisectYear(dataset, x0, 1), 
+                d0 = dataset[i - 1], 
+                d1 = dataset[i],
+                d = x0 - d0.year > d1.year - x0 ? d1 : d0;
+          focus.attr("transform", "translate(" + xScale(d.Year) + "," + yScale(d["Annual Mean"]) + ")");
+          focus.select("text").text(function() { return d["Annual Mean"]; });
+          focus.select(".x-hover-line").attr("y2", height - yScale(d["Annual Mean"]));
+          focus.select(".y-hover-line").attr("x2", width + width);
+        }
 
     }
 });

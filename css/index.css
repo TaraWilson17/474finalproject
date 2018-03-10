@@ -60,6 +60,7 @@ p {
 .selectform {
     font-size: 8px
 }
+
 .tooltip {
     background-color: white;
     border: 1px solid black;
@@ -107,3 +108,38 @@ body {
   .seaLevelButton {
       max-width: 50%;
   }
+
+  .axis {
+	font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #D4D8DA;
+  stroke-width: 2px;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  fill: none;
+  stroke: #FF0000;
+  stroke-width: 5px;
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
+
+.focus circle {
+  fill: #F1F3F3;
+  stroke: #FF0000;
+  stroke-width: 5px;
+}
+  
+.hover-line {
+  stroke: #FF0000;
+  stroke-width: 2px;
+  stroke-dasharray: 3,3;
+}
