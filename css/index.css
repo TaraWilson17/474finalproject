@@ -103,3 +103,7 @@ body {
     pointer-events: none;
     text-anchor: middle;
   }
+
+  #diet_selections {
+      font-size: 17px;
+  }

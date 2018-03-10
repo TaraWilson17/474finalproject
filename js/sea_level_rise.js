@@ -26,7 +26,7 @@
     //function drawSeaLevel(data, fillVal) { 
     function drawSeaLevel() { 
         let animateSeaLevel = document.createElement("button");
-        animateSeaLevel.classList.add("mt-5", "ml-0", "btn", "btn-outline-dark", "text-center");
+        animateSeaLevel.classList.add("mt-5", "ml-0", "btn", "btn-dark", "text-center", "text-light");
         let t = document.createTextNode("Click to watch how global sea level has risen since 1880");
         animateSeaLevel.appendChild(t);
         animateSeaLevel.onclick = function(){loadLiquidFillGauge(sl_svg, 8.98, sl_configure)};

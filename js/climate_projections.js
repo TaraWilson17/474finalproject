@@ -72,7 +72,10 @@ $(function() {
 
         let commitline = d3.line()
             .x(function(d) {return x(d.year); })
-            .y(function(d) {return y(d.commit); });
+            .y(function(d) {return y(d.commit); })
+        
+        // commitline
+        //     .on("press", function() {console.log("selected line")});
 
         drawLine(commitdata, commitline, "purple");
     })
@@ -113,6 +116,12 @@ let y = d3.scaleLinear().range([height, 0])
     svg.append("g")
         .call(d3.axisLeft(y));
     
+    svg.append("text")
+        .attr("x", 50)             
+        .attr("y", 85)
+        .attr("font-weight", "bold")
+        .text("Climate Models:")
+    
     // Add label to the x-axis
     svg.append("text")             
         .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
@@ -140,9 +149,9 @@ let y = d3.scaleLinear().range([height, 0])
         .text("Climate Model Projections");
 
     let colors = ["green", "blue", "red", "purple"];
-    let models = ["A1B", "A2", "B1", "commit"];
+    let models = ["A1B", "A2", "B1", "Commit"];
 
-    var tooltip = d3.select("body")
+    let tooltip = d3.select("body")
                     .append("div")
                     .style("position", "absolute")
                     .style("z-index", "10")
@@ -161,16 +170,15 @@ let y = d3.scaleLinear().range([height, 0])
         // draw legend text
         legend.append("text")
             .attr("x", width - 530)
-            .attr("y", 75)
+            .attr("y", 115)
             .attr("font-weight", "bold")
-            .attr("dy", ".ƒ35em")
             //.style("text-anchor", "end")
             .text(function (d, i) {return models[i]; })
         
         // draw legend colored rectangles
         legend.append("rect")
             .attr("x", width - 560)
-            .attr("y", 59)
+            .attr("y", 99)
             .attr("width", 18)
             .attr("height", 18)
             .style("fill", function(d, i) {return colors[i]});

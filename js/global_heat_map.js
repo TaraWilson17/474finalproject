@@ -83,7 +83,7 @@ $(function() {
         }
 
         let animateMap = document.createElement("button");
-        animateMap.classList.add("ml-5","btn", "btn-success", "text-center", "text-dark");
+        animateMap.classList.add("ml-5","btn", "btn-dark", "text-center", "text-light");
         let t = document.createTextNode("Reanimate Map");
         animateMap.appendChild(t);
         animateMap.onclick = function(){for(let i = 0; i < 21; i++) {
