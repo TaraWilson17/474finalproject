@@ -179,7 +179,7 @@ $(function() {
         // Adds title to the visual
         svg_summary.append("text")
             .attr("x", (sum_width / 2))             
-            .attr("y", 480)
+            .attr("y", 476)
             .style("text-anchor", "middle")
             .attr("font-weight", "bold")
             .text("Comparison");
