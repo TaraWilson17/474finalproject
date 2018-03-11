@@ -19,11 +19,14 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.25.5/d3-legend.js"></script>
+
     <!--Map-->
     <script src="http://d3js.org/queue.v1.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
 
     <!-- Importing My Sheets -->
+
     <!-- main.css -->
 
     <link rel="stylesheet" href="css/index.css" />
@@ -78,7 +81,8 @@
                                         warming. Also, as ice melts, it lowers the ability to reflect the sun's energy back into space. This creates a negative 
                                         feedback loop where more warming leads to more melting which in terms leads to more warming.
                                     </p>
-                                    <button onclick="reanimateMap()">Reanimate</button>
+                                    <div id="map_legend" class="ml-4"></div>
+                                    <div id="reanimate_graph_button"></div>
                                 </div>
                             </div>
                         </div>
@@ -224,7 +228,7 @@
             <div id="garbageVolume" class="slider mb-2"></div>
         </div>
         <div class='mt-0 pt-0'>
-           <p class='p-0'>Diet Habits<select id='selectform'></p>
+           <p class='p-0' id="diet_selections">Diet Habits: <select id='selectform'></p>
            <option value="15.8" selected='selected'>Heavy Meat Eater (3.5+ ounces per day)</option>
            <option value="12.4" >Medium Meat Eater (3.5-1.7 ounces per day)</option>
            <option value="10.3" >Low Meat Eater (1.7 ounces or less  per day)</option>

@@ -107,11 +107,16 @@ $(function () {
         }
 
         let buttonData = [{label: "What is the significance of 400 ppm?", x:250, y:185, button:1, class:"ppm", 
-                            text:"400 ppm means out of every 1 million particles of air, 400 of them are carbon dioxide. This is a threshold that hasn't been reached since the stone age."},
-                        {label: "Why are there such dense oscillations?", x:475, y:500, button:2, class:"cycles", text:"These fluctuations represent the seasonal cycle"}]
+                            text1:"400 ppm means out of every 1 million particles of",
+                            text2: "air, 400 of them are carbon dioxide. This is a threshold",
+                            text3: "that hasn't been reached since the stone age."},
+                        {label: "Why are there such dense oscillations?", x:475, y:500, button:2, class:"cycles", 
+                            text1:"These fluctuations represent the seasonal cycle",
+                            text2: "the occurs with the increased uptake of carbon",
+                            text3: "dioxide by plants during growing season."}]
 
         let button = d3.button()
-            .on("press", function(d, i) {showText(d.text, d.x, d.y, d.button, d.class)})
+            .on("press", function(d, i) {showText(d.text1, d.text2, d.text3, d.x, d.y, d.button, d.class)})
             .on("release", function(d, i) {removeText(d.class)});
         
         let buttons = svg.selectAll(".button")
@@ -121,13 +126,27 @@ $(function () {
             .attr("class", "button")
             .call(button);
         
-        function showText(text, x, y, num, className) {
+        function showText(text1, text2, text3, x, y, num, className) {
             if(num === 1) {
                 svg.append("text")
                     .attr("class", className)
                     .attr("x", x - 170)
-                    .attr("y", y +60)
-                    .text(text)
+                    .attr("y", y + 60)
+                    .text(text1)
+                    .style("font-size", "20px") 
+                    .style("opacity", 1);
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 170)
+                    .attr("y", y + 80)
+                    .text(text2)
+                    .style("font-size", "20px") 
+                    .style("opacity", 1);
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 170)
+                    .attr("y", y + 100)
+                    .text(text3)
                     .style("font-size", "20px") 
                     .style("opacity", 1);
             } else {
@@ -135,14 +154,28 @@ $(function () {
                     .attr("class", className)
                     .attr("x", x - 180)
                     .attr("y", y + 40)
-                    .text(text)
+                    .text(text1)
+                    .style("font-size", "20px") 
+                    .style("opacity", 1);
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 180)
+                    .attr("y", y + 60)
+                    .text(text2)
+                    .style("font-size", "20px") 
+                    .style("opacity", 1);
+                svg.append("text")
+                    .attr("class", className)
+                    .attr("x", x - 180)
+                    .attr("y", y + 80)
+                    .text(text3)
                     .style("font-size", "20px") 
                     .style("opacity", 1);
             }
         }
 
         function removeText(className) {
-            d3.select("." + className).remove();
+            d3.selectAll("." + className).remove();
         }
 
     });

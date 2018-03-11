@@ -105,8 +105,8 @@ body {
     text-anchor: middle;
   }
 
-  .seaLevelButton {
-      max-width: 50%;
+  #diet_selections {
+      font-size: 17px;
   }
 
   .axis {
