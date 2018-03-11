@@ -2,6 +2,100 @@ $(function() {
     // parse the date / time
     let parseTime = d3.timeParse("%Y");
 
+    // set the dimensions and margins of the graph
+    var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+    width = +700 - margin.left - margin.right,
+    height = +500 - margin.top - margin.bottom
+
+
+    // set the ranges
+    let x = d3.scaleLinear().range([0, width])
+    .domain([1900, 2100]);
+
+    let y = d3.scaleLinear().range([height, 0])
+    .domain([-1, 4]);
+
+    //   x.domain(d3.extent(data, function(d) { return d.date; }));
+    //   y.domain([0, d3.max(data, function(d) { return d.close; })]);
+
+
+    // append the svg obgect to the body of the page
+    // appends a 'group' element to 'svg'
+    // moves the 'group' element to the top left margin
+    let svg = d3.select("#projection_vis").append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+        .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+
+    // Add the X Axis
+    svg.append("g")
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+
+    // Add the Y Axis
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    svg.append("text")
+        .attr("x", 50)             
+        .attr("y", 85)
+        .attr("font-weight", "bold")
+        .text("Climate Models: (click on a line to learn more)")
+
+    // Add label to the x-axis
+    svg.append("text")             
+        .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text("Year");
+
+    // adds y axis label
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .attr("font-weight", "bold")
+        .text("Climate Prediction"); 
+
+    // Adds title to the visual
+    svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 17)
+        .attr("font-weight", "bold")
+        .attr("text-anchor", "middle")  
+        .style("font-size", "24px") 
+        .text("Climate Model Projections");
+
+    let colors = ["green", "blue", "red", "purple"];
+    let models = ["A1B", "A2", "B1", "Commit"];
+
+    let tooltip = d3.select("body")
+                    .append("div")
+                    .style("position", "absolute")
+                    .style("z-index", "10")
+                    .style("visibility", "hidden");
+
+    drawLegend();
+
+    let description = svg.append("text")
+        .attr("x", width - 520)
+        .attr("y", height - 10)
+        .style("font-size", "17px");
+
+    let intro = svg.append("text")
+        .attr("x", width - 350)
+        .attr("y", height - 40)
+        .style("font-size", "17px");
+
+    let A1Bpath;
+    let A2path;
+    let B2path;
+    let Commitpath;
+
     d3.csv("data/model_proj_20C3M.csv", function (error, data) {
         if (error) return console.warn(error);
         data.forEach(function(d) {
@@ -29,7 +123,8 @@ $(function() {
             .x(function(d) {return x(d.year); })
             .y(function(d) {return y(d.A1B); });
 
-        drawLine(A1Bdata, A1Bline, "green");
+        A1Bpath = drawLine(A1Bdata, A1Bline, "green", handleA1BMouseDown);
+
     })
 
     d3.csv("data/model_proj_A2.csv", function (error, data) {
@@ -44,7 +139,8 @@ $(function() {
             .x(function(d) {return x(d.year); })
             .y(function(d) {return y(d.A2); });
 
-        drawLine(A2data, A2line, "blue");
+        A2path = drawLine(A2data, A2line, "blue", handleA2MouseDown);
+
     })
 
     d3.csv("data/model_proj_B1.csv", function (error, data) {
@@ -59,7 +155,8 @@ $(function() {
             .x(function(d) {return x(d.year); })
             .y(function(d) {return y(d.B1); });
 
-        drawLine(B1data, B1line, "red");
+        B1path = drawLine(B1data, B1line, "red", handleB1MouseDown);
+
     })
 
     d3.csv("data/model_proj_commit.csv", function (error, data) {
@@ -73,91 +170,11 @@ $(function() {
         let commitline = d3.line()
             .x(function(d) {return x(d.year); })
             .y(function(d) {return y(d.commit); })
-        
-        // commitline
-        //     .on("press", function() {console.log("selected line")});
 
-        drawLine(commitdata, commitline, "purple");
+        Commitpath = drawLine(commitdata, commitline, "purple", handleCommitMouseDown);
+
     })
 
-// set the dimensions and margins of the graph
-var margin = { top: 20, right: 20, bottom: 40, left: 60 },
-    width = +700 - margin.left - margin.right,
-    height = +500 - margin.top - margin.bottom
-
-
-// set the ranges
-let x = d3.scaleLinear().range([0, width])
-    .domain([1900, 2100]);
-
-let y = d3.scaleLinear().range([height, 0])
-    .domain([-1, 4]);
-
-//   x.domain(d3.extent(data, function(d) { return d.date; }));
-//   y.domain([0, d3.max(data, function(d) { return d.close; })]);
-
-
-    // append the svg obgect to the body of the page
-    // appends a 'group' element to 'svg'
-    // moves the 'group' element to the top left margin
-    let svg = d3.select("#projection_vis").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform",
-            "translate(" + margin.left + "," + margin.top + ")");
-
-    // Add the X Axis
-    svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
-
-    // Add the Y Axis
-    svg.append("g")
-        .call(d3.axisLeft(y));
-    
-    svg.append("text")
-        .attr("x", 50)             
-        .attr("y", 85)
-        .attr("font-weight", "bold")
-        .text("Climate Models:")
-    
-    // Add label to the x-axis
-    svg.append("text")             
-        .attr("transform", "translate(" + (width / 2) + " ," + (height + margin.top + 20) + ")")
-        .style("text-anchor", "middle")
-        .attr("font-weight", "bold")
-        .text("Year");
-    
-    // adds y axis label
-    svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left)
-        .attr("x",0 - (height / 2))
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .attr("font-weight", "bold")
-        .text("Climate Prediction"); 
-    
-    // Adds title to the visual
-    svg.append("text")
-        .attr("x", (width / 2))             
-        .attr("y", 17)
-        .attr("font-weight", "bold")
-        .attr("text-anchor", "middle")  
-        .style("font-size", "24px") 
-        .text("Climate Model Projections");
-
-    let colors = ["green", "blue", "red", "purple"];
-    let models = ["A1B", "A2", "B1", "Commit"];
-
-    let tooltip = d3.select("body")
-                    .append("div")
-                    .style("position", "absolute")
-                    .style("z-index", "10")
-                    .style("visibility", "hidden");
-
-    drawLegend();
 
     function drawLegend() {
         //creates the legend elements
@@ -172,7 +189,6 @@ let y = d3.scaleLinear().range([height, 0])
             .attr("x", width - 530)
             .attr("y", 115)
             .attr("font-weight", "bold")
-            //.style("text-anchor", "end")
             .text(function (d, i) {return models[i]; })
         
         // draw legend colored rectangles
@@ -185,14 +201,102 @@ let y = d3.scaleLinear().range([height, 0])
     }
 
 
-    function drawLine(data, line, color) {
+    function drawLine(data, line, color, functionName) {
         // Add the valueline path.
-        svg.append("path")
+        let path = svg.append("path")
             .data([data])
             .style("fill", "none")
             .style("stroke-width", "4px")
             .style("stroke", color)
-            .attr("d", line);
+            .attr("d", line)
+            .on("mousedown", functionName);
+        
+        return path;
+
+    }
+
+    function handleCommitMouseDown() {
+        intro
+            .text("This model is based on");
+
+        description
+            .text("the stabilization of current greenhouse gas concentrations");
+        
+        Commitpath
+            .style("stroke-width", "7px")
+            .style("opacity", 1)
+        B1path
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        A1Bpath
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        A2path
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+    }
+
+    function handleA1BMouseDown() {
+        intro
+            .text("This model is based on");
+
+        description
+            .text("projected population growth and a balance of other energy sources");
+
+        A1Bpath
+            .style("stroke-width", "7px")
+            .style("opacity", 1)
+        B1path
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        Commitpath
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        A2path
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+    }
+
+    function handleA2MouseDown() {
+        intro
+            .text("This model is based on");
+
+        description
+            .text("projected population growth and varied rates of development");
+        
+        A2path
+            .style("stroke-width", "7px")
+            .style("opacity", 1)
+        B1path
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        A1Bpath
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        Commitpath
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+    }
+
+    function handleB1MouseDown() {
+        intro
+            .text("This model is based on");
+
+        description
+            .text("slower population growth and local focus on enviornmental proptection");
+        
+        B1path
+            .style("stroke-width", "7px")
+            .style("opacity", 1)
+        Commitpath
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        A1Bpath
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
+        A2path
+            .style("opacity", 0.4)
+            .style("stroke-width", "4px")
     }
 
 });
