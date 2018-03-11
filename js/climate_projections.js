@@ -284,7 +284,7 @@ $(function() {
         intro
             .text("This model is based on");
         description
-            .text("slower population growth and local focus on enviornmental protection");
+            .text("slower population growth and local focus on environmental protection");
         B1path
             .style("stroke-width", "7px")
             .style("opacity", 1)
