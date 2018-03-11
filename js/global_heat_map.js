@@ -1,32 +1,31 @@
-function reanimateMap() {
-    console.log("A");
-}
+/**
+ * Reads in data for and creates the map visual. Updates in biyearly incriments from
+ * 1976-2017. Also allows for replay of annimation and creates color legend
+ */
 
 $(function() {
+    // scales the data values
     let color = d3.scaleLinear()
         .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
         .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
 
+    // sets up color legend
     let leg = d3.select("#map_legend").append("svg");
-
     leg 
         .attr("height", 70)
-        .attr("width", 350)
-
+        .attr("width", 350);
     leg.append("g")
         .attr("class", "legendLinear")
         .attr("transform", "translate(20,20)");
-
     let legendLinear = d3.legendColor()
         .shapeWidth(40)
         .cells(7)
         .orient("horizontal")
         .scale(color);
-
     leg.select(".legendLinear")
         .call(legendLinear);
 
-
+    // sets width and height for visual
     let width = 1000;
     let height = 500;
     
@@ -38,16 +37,16 @@ $(function() {
       .scale(width / 2 / Math.PI)
       .translate([width / 2, height / 2])
 
+    // draws actual map land from geojson
     let path = d3.geoPath()
       .projection(projection);
-    
     let url = "https://enjalot.github.io/wwsd/data/world/world-110m.geojson";
     d3.json(url, function(err, geojson) {
       svg.append("path")
         .attr("d", path(geojson))
     })
 
-
+    // reads in annual heat index data
     d3.csv("data/global_heat_index_data.csv", function (error, data) {
         if (error) return console.warn(error);
             data.forEach(function (d) {
@@ -74,7 +73,6 @@ $(function() {
                 d["2012-2013"] = +d["2012-2013"];
                 d["2014-2015"] = +d["2014-2015"];
                 d["2016-2017"] = +d["2016-2017"];
-
         });
         dataset = data;
 
@@ -82,6 +80,7 @@ $(function() {
             setTimeout(drawVis, i * 1000, dataset, 1976 + (i * 2) + "", 1977 + (i * 2) + "");
         }
 
+        // allows button for replay of annimation
         let animateMap = document.createElement("button");
         animateMap.classList.add("ml-5","btn", "btn-dark", "text-center", "text-light");
         let t = document.createTextNode("Reanimate Map");
@@ -93,13 +92,14 @@ $(function() {
         
     });
 
+    // draws the map with current data selection by adding circles on lat and long coordinate
+    // following divergent color scheme and labels current years desplayed in title
     function drawVis(data, startYear, endYear) {
         d3.selectAll(".mapTitle").remove();
 
         let color = d3.scaleLinear()
             .domain([-1.5, -1, -0.5, 0, 0.5, 1, 1.5])
             .range(["#2166ac", "#67a9cf", "#d1e5f0", "#f7f7f7", "#fddbc7", "#ef8a62", "#b2182b"]);
-
 
         let circles = svg.selectAll("circle")
             .data(data)

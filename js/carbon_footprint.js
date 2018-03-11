@@ -1,35 +1,42 @@
-$(function() {
-    var dataset; //the full dataset
+/**
+ * This file stores the data for and creates the interactive bar charts and user
+ * inputs regarding a carbon footprint
+ */
 
-    var margin = { top: 20, right: 20, bottom: 40, left: 60 },
+$(function() {
+    let dataset; //the full dataset
+
+    let margin = { top: 20, right: 20, bottom: 40, left: 60 },
         width = +700 - margin.left - margin.right,
         height = +500 - margin.top - margin.bottom
 
 
-    var sum_margin = { top: 20, right: 20, bottom: 40, left: 60 },
+    let sum_margin = { top: 20, right: 20, bottom: 40, left: 60 },
         sum_width = +350 - margin.left - margin.right,
         sum_height = +500 - margin.top - margin.bottom
 
-     
-    var xScale = d3.scaleBand()
+    // sets scales
+    let xScale = d3.scaleBand()
           .range([0, width])
           .padding(0.1);
-    var yScale = d3.scaleLinear().range([height, 0]);
+    let yScale = d3.scaleLinear().range([height, 0]);
 
-    var sum_xScale = d3.scaleBand()
+    let sum_xScale = d3.scaleBand()
         .range([0, sum_width])
         .padding(0.1);
     
-    var carFootPrintYearly = 10484;
-    var carMilesDriven = 11398;
-    var emissionsFromHome = 5455;
-    var emissionsFromGarbage = 692;
-    var thisPersonsCar = 220;
-    var yourElectricity = 100;
-    var yourGarbage = 100;
-    var avgDiet = 5767;
-    var yourDiet = 5767;
+    // baseline data for all conditions
+    let carFootPrintYearly = 10484;
+    let carMilesDriven = 11398;
+    let emissionsFromHome = 5455;
+    let emissionsFromGarbage = 692;
+    let thisPersonsCar = 220;
+    let yourElectricity = 100;
+    let yourGarbage = 100;
+    let avgDiet = 5767;
+    let yourDiet = 5767;
 
+    // sets bar chart color scheme
     function colors(x) {
         if(x % 2 == 1) {
             return 'green'
@@ -38,22 +45,23 @@ $(function() {
         }
     }
 
-    var svg_summary = d3.select("#individual_footprint_summary").append("svg")
+    // sets up svgs for bar charts
+    let svg_summary = d3.select("#individual_footprint_summary").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var svg = d3.select("#individual_footprint").append("svg")
+    let svg = d3.select("#individual_footprint").append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var slider = svg.append('g')
+    let slider = svg.append('g')
         .attr('class', 'slider')
     
-
+    // creates sliders for value inputs
     $('#MilesDrivenValue').val(220)
     $('#milesDriven').slider({
         range:false, min:0, max:220, value:220, slide: function(event, ui) {
@@ -89,15 +97,15 @@ $(function() {
         drawBarGraph();
     })
     
-
+    // draws the bar graph based on current data
     function drawBarGraph() {
-        var data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100, avgDiet, yourDiet]
+        let data = [carFootPrintYearly, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven), emissionsFromHome, emissionsFromHome * yourElectricity/100,  emissionsFromGarbage,  emissionsFromGarbage * yourGarbage/100, avgDiet, yourDiet]
 
-        var sum_data = [carFootPrintYearly + emissionsFromHome + emissionsFromGarbage + avgDiet, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven) + emissionsFromHome * yourElectricity/100 + emissionsFromGarbage * yourGarbage/100 + yourDiet]
+        let sum_data = [carFootPrintYearly + emissionsFromHome + emissionsFromGarbage + avgDiet, thisPersonsCar * 52 * (carFootPrintYearly/carMilesDriven) + emissionsFromHome * yourElectricity/100 + emissionsFromGarbage * yourGarbage/100 + yourDiet]
        
-    var Labels = [ 'Average Car', ' Your Car', 'Average Electricity', 'Your Electricity', 'Average Garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
+    let Labels = [ 'Average Car', ' Your Car', 'Average Electricity', 'Your Electricity', 'Average Garbage', 'Your Garbage', 'Average Diet', 'Your Diet']
 
-    var sum_labels = ['Average Person', 'You']
+    let sum_labels = ['Average Person', 'You']
 
         xScale.domain(Labels)
         yScale.domain([0, 12000])
@@ -185,7 +193,7 @@ $(function() {
             .text("Comparison");
     }
 
-     var  models = ["Average Person", "You"]
+     let  models = ["Average Person", "You"]
      let modelColors = ["gray", "green"]
 
     function drawLegend(legend) {
@@ -203,7 +211,7 @@ $(function() {
             .attr("x", width - 530)
             .attr("y", 9)
             .attr("font-weight", "bold")
-            .attr("dy", ".ƒ35em")
+            //.attr("dy", ".ƒ35em")
             //.style("text-anchor", "end")
             .text(function (d, i) {return models[i]; })
         
@@ -215,7 +223,6 @@ $(function() {
             .style("fill", function(d, i) {return modelColors[i]});
     }
 
-
-    drawBarGraph()
-    drawLegend()
+    drawBarGraph();
+    drawLegend();
 })

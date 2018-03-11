@@ -1,3 +1,8 @@
+/**
+ * Creates the liquid fill gauge to display sea level rise since most recent measurement.
+ * Code adapted from: http://bl.ocks.org/brattonc/5e5ce9beee483220e2f6
+ */
+
 (function(d3) {
     let idGenerator = (function() {
         let count = 0;
@@ -8,6 +13,7 @@
 
     loadSeaLevelData();
 
+    // loads in sea level data
     function loadSeaLevelData() {
         d3.csv("data/sea_level_data.csv", function (error, data) {
             if (error) return console.warn(error);
@@ -23,12 +29,13 @@
         });
     }
 
-    //function drawSeaLevel(data, fillVal) { 
+    //creates button to annimate and call sea level data rise visual
     function drawSeaLevel() { 
         let animateSeaLevel = document.createElement("button");
         animateSeaLevel.classList.add("mt-5", "ml-0", "btn", "btn-dark", "text-center", "text-light");
         let t = document.createTextNode("Click to watch how global sea level has risen since 1880");
         animateSeaLevel.appendChild(t);
+        // 8.98 from most recent data measurement
         animateSeaLevel.onclick = function(){loadLiquidFillGauge(sl_svg, 8.98, sl_configure)};
         document.querySelector("#sea_level_rise_button").appendChild(animateSeaLevel);
 
@@ -39,6 +46,7 @@
         let sl_configure = defaultConfig;
     }
 
+    // sets up default values for wave animation
     let defaultConfig = {
         // Values
         minValue: 0, // The gauge minimum value.
@@ -82,6 +90,7 @@
         waveTextColor: "#A4DBf8", // The color of the value text when the wave overlaps it.
     };
 
+    // draws liquid fill guage from setting parameters
     function loadLiquidFillGauge(g, value, settings) {
         d3.selectAll(".liquidFillGaugeText").remove(); 
         // Handle configuration
@@ -98,7 +107,6 @@
             let radius = Math.min(width, height) / 2;
             let locationX = width / 2 - radius;
             let locationY = height / 2 - radius;
-            //let fillPercent = Math.max(config.get("minValue"), Math.min(config.get("maxValue"), ((value / 15)/100))) / config.get("maxValue"); //FIX THIS!!!
             let fillPercent = Math.max((10 * value), 0) / (config.get("maxValue") / 10);
 
             let waveHeightScale;

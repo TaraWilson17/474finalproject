@@ -1,6 +1,12 @@
+/**
+ * This file reads in the data for and creates the line graph for the global heat index.
+ * Shows the tmemperatue trends and also allows interactive tooltips.
+ */
+
 $(function() {
     var dataset; //the full dataset
 
+    // sets up visual area
     var margin = { top: 20, right: 20, bottom: 40, left: 60 },
         width = +700 - margin.left - margin.right,
         height = +500 - margin.top - margin.bottom
@@ -12,6 +18,7 @@ $(function() {
     var xValue = function (d) { return d.Year; }, // data -> value
         xMap = function (d) { return xScale(xValue(d)); }; // data -> display
 
+    // parses date data into year
     var parseTime = d3.timeParse("%Y")
         bisectYear = d3.bisector(function(d) { return d.Year; }).left;
 
@@ -28,8 +35,8 @@ $(function() {
     var line = d3.line()
                 .x(function(d) { return xScale(d['Year']);})
                 .y(function(d) { return yScale(d["Annual Mean"]);});
-    
 
+    // reads in heat data
     d3.csv("data/647_Global_Temperature_Data_File.csv", function (error, data) {
         if (error) return console.warn(error);
             data.forEach(function (d) {
@@ -43,6 +50,7 @@ $(function() {
         drawVis(dataset);
     });
 
+    // draws the line and scatterplot for heat index data
     function drawVis(dataset) {
 
         svg.selectAll("g")
@@ -107,6 +115,7 @@ $(function() {
             .style("fill", "none")
             .attr("d", line);
 
+        // creates interactive tooltips
         var focus = svg.append("g")
             .attr("class", "focus")
             .style("display", "none");

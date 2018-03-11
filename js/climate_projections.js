@@ -1,5 +1,9 @@
+/* This file contains the code to create the climate model projections visual.
+It reads in the data, creates the projection line for each and then adds the
+interactivity for users to click on a line to learn more about that model */
+
 $(function() {
-    // parse the date / time
+    // parse the date to years
     let parseTime = d3.timeParse("%Y");
 
     // set the dimensions and margins of the graph
@@ -7,17 +11,11 @@ $(function() {
     width = +700 - margin.left - margin.right,
     height = +500 - margin.top - margin.bottom
 
-
-    // set the ranges
+    // set the ranges and domains
     let x = d3.scaleLinear().range([0, width])
     .domain([1900, 2100]);
-
     let y = d3.scaleLinear().range([height, 0])
     .domain([-1, 4]);
-
-    //   x.domain(d3.extent(data, function(d) { return d.date; }));
-    //   y.domain([0, d3.max(data, function(d) { return d.close; })]);
-
 
     // append the svg obgect to the body of the page
     // appends a 'group' element to 'svg'
@@ -70,6 +68,7 @@ $(function() {
         .style("font-size", "24px") 
         .text("Climate Model Projections");
 
+    // colors for all projections
     let colors = ["green", "blue", "red", "purple"];
     let models = ["A1B", "A2", "B1", "Commit"];
 
@@ -81,21 +80,23 @@ $(function() {
 
     drawLegend();
 
+    // to add text description for the models
+    let intro = svg.append("text")
+        .attr("x", width - 350)
+        .attr("y", height - 40)
+        .style("font-size", "17px");
     let description = svg.append("text")
         .attr("x", width - 520)
         .attr("y", height - 10)
         .style("font-size", "17px");
 
-    let intro = svg.append("text")
-        .attr("x", width - 350)
-        .attr("y", height - 40)
-        .style("font-size", "17px");
-
+    // variables for all projection lines
     let A1Bpath;
     let A2path;
     let B2path;
     let Commitpath;
 
+    // reads in data leading up to current date
     d3.csv("data/model_proj_20C3M.csv", function (error, data) {
         if (error) return console.warn(error);
         data.forEach(function(d) {
@@ -111,6 +112,7 @@ $(function() {
         drawLine(d20C3Mdata, d20C3Mline, "black");
     })
 
+    // reads in A1B model projection data
     d3.csv("data/model_proj_A1B.csv", function (error, data) {
         if (error) return console.warn(error);
         data.forEach(function(d) {
@@ -127,6 +129,7 @@ $(function() {
 
     })
 
+    // reads in A2 modal projection data
     d3.csv("data/model_proj_A2.csv", function (error, data) {
         if (error) return console.warn(error);
         data.forEach(function(d) {
@@ -143,6 +146,7 @@ $(function() {
 
     })
 
+    // reads in B1 model projection data
     d3.csv("data/model_proj_B1.csv", function (error, data) {
         if (error) return console.warn(error);
         data.forEach(function(d) {
@@ -159,6 +163,7 @@ $(function() {
 
     })
 
+    // reads in all the commit model projection data
     d3.csv("data/model_proj_commit.csv", function (error, data) {
         if (error) return console.warn(error);
         data.forEach(function(d) {
@@ -172,10 +177,9 @@ $(function() {
             .y(function(d) {return y(d.commit); })
 
         Commitpath = drawLine(commitdata, commitline, "purple", handleCommitMouseDown);
-
     })
 
-
+    // draws the legend marking the different projection lines
     function drawLegend() {
         //creates the legend elements
         let legend = svg.selectAll(".legend")
@@ -200,9 +204,9 @@ $(function() {
             .style("fill", function(d, i) {return colors[i]});
     }
 
-
+    // draws and returns a path line
     function drawLine(data, line, color, functionName) {
-        // Add the valueline path.
+        // Add the valueline path
         let path = svg.append("path")
             .data([data])
             .style("fill", "none")
@@ -215,13 +219,12 @@ $(function() {
 
     }
 
+    // highlights and shows description when commit model is clicked
     function handleCommitMouseDown() {
         intro
             .text("This model is based on");
-
         description
             .text("the stabilization of current greenhouse gas concentrations");
-        
         Commitpath
             .style("stroke-width", "7px")
             .style("opacity", 1)
@@ -236,13 +239,12 @@ $(function() {
             .style("stroke-width", "4px")
     }
 
+    // highlights and shows description when A1B model is clicked
     function handleA1BMouseDown() {
         intro
             .text("This model is based on");
-
         description
             .text("projected population growth and a balance of other energy sources");
-
         A1Bpath
             .style("stroke-width", "7px")
             .style("opacity", 1)
@@ -257,13 +259,12 @@ $(function() {
             .style("stroke-width", "4px")
     }
 
+    // highlights and shows description when A2 model is clicked
     function handleA2MouseDown() {
         intro
             .text("This model is based on");
-
         description
             .text("projected population growth and varied rates of development");
-        
         A2path
             .style("stroke-width", "7px")
             .style("opacity", 1)
@@ -278,13 +279,12 @@ $(function() {
             .style("stroke-width", "4px")
     }
 
+    // highlights and shows description when B2 model is clicked
     function handleB1MouseDown() {
         intro
             .text("This model is based on");
-
         description
             .text("slower population growth and local focus on enviornmental proptection");
-        
         B1path
             .style("stroke-width", "7px")
             .style("opacity", 1)
