@@ -88,7 +88,7 @@ $(function () {
             
             // Adds title to the visual
             svg.append("text")
-                .attr("x", (width / 2))             
+                .attr("x", width - 200)             
                 .attr("y", 20)
                 .attr("font-weight", "bold")
                 .attr("text-anchor", "middle")  
